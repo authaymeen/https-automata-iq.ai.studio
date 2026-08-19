@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>ابنِ خطة تطبيقك أو مشروعك مع AI | Automata IQ</title>
+  <meta name="title" content="ابنِ خطة تطبيقك أو مشروعك مع AI | Automata IQ" />
+  <meta name="description" content="أداة مجانية بالذكاء الاصطناعي من Automata IQ تحول فكرتك إلى خطة مشروع وأتمتة متكاملة وترد عليك مباشرة بثوانٍ." />
+  <meta name="theme-color" content="#010308" />
+
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <link rel="apple-touch-icon" href="/logo.svg" />
+
+  <!-- Google Fonts: Cairo + IBM Plex Sans Arabic + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', 'sans-serif'],
+            heading: ['"Cairo"', '"IBM Plex Sans Arabic"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            obsidian: {
+              950: '#010308',
+              900: '#030712',
+              850: '#060b18',
+              800: '#0b1326',
+              750: '#101b33',
+            },
+            emeraldGlow: {
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              DEFAULT: '#00f59b',
+            },
+            cyanGlow: {
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              DEFAULT: '#00f0ff',
+            },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Marked.js for Markdown Parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <style>
+    :root {
+      --bg-deep: #f8fafc;
+      --card-bg: #ffffff;
+      --border-laser: #e2e8f0;
+      --border-cyan-laser: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+    }
+
+    html.dark {
+      --bg-deep: #010308;
+      --card-bg: rgba(6, 11, 24, 0.88);
+      --border-laser: rgba(16, 185, 129, 0.25);
+      --border-cyan-laser: rgba(0, 240, 255, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    html.dark body {
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 40%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 40%),
+        radial-gradient(at 50% 50%, rgba(1, 3, 8, 0.95) 0px, transparent 100%),
+        linear-gradient(180deg, #010308 0%, #030712 50%, #010308 100%);
+      background-attachment: fixed;
+    }
+
+    html:not(.dark) body {
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.05) 0px, transparent 45%),
+        linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+      background-attachment: fixed;
+    }
+
+    .grid-pattern {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at 50% 40%, black 50%, transparent 92%);
+      z-index: 0;
+    }
+
+    .precision-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-laser);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html:not(.dark) .precision-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    .precision-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.7) 30%, rgba(0, 240, 255, 0.8) 70%, transparent 100%);
+      opacity: 0.7;
+    }
+
+    html:not(.dark) .precision-card::after {
+      opacity: 0.35;
+    }
+
+    html:not(.dark) .precision-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .btn-start-project {
+      background: linear-gradient(135deg, #00f59b 0%, #10b981 45%, #06b6d4 100%);
+      color: #010308;
+      font-weight: 800;
+      box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.55);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-start-project:hover {
+      background: linear-gradient(135deg, #34d399 0%, #00f59b 50%, #22d3ee 100%);
+      box-shadow: 0 14px 38px -2px rgba(16, 185, 129, 0.75);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .brand-container {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 1rem;
+      padding: 0.35rem 0.75rem;
+      transition: all 0.3s ease;
+    }
+    .brand-container:hover {
+      border-color: rgba(0, 245, 155, 0.5);
+      box-shadow: 0 0 20px rgba(0, 245, 155, 0.15);
+    }
+
+    .category-chip {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .category-chip:hover {
+      transform: translateY(-3px);
+      border-color: rgba(0, 245, 155, 0.8);
+      box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.3);
+    }
+    .category-chip.active {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(6, 182, 212, 0.15) 100%);
+      border-color: #00f59b;
+      box-shadow: 0 0 25px rgba(0, 245, 155, 0.3);
+    }
+
+    /* Markdown Styling in AI chat response */
+    .prose-ai h1, .prose-ai h2, .prose-ai h3, .prose-ai h4 {
+      font-family: 'Cairo', 'IBM Plex Sans Arabic', sans-serif;
+      font-weight: 800;
+      color: #00f59b;
+      margin-top: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .dark .prose-ai h1, .dark .prose-ai h2, .dark .prose-ai h3, .dark .prose-ai h4 {
+      color: #00f59b;
+    }
+    html:not(.dark) .prose-ai h1, html:not(.dark) .prose-ai h2, html:not(.dark) .prose-ai h3, html:not(.dark) .prose-ai h4 {
+      color: #059669;
+    }
+    .prose-ai p {
+      margin-bottom: 0.75rem;
+      line-height: 1.75;
+    }
+    .prose-ai ul, .prose-ai ol {
+      margin-right: 1.25rem;
+      margin-bottom: 0.75rem;
+      list-style-type: disc;
+    }
+    .prose-ai li {
+      margin-bottom: 0.4rem;
+    }
+    .prose-ai strong {
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    html:not(.dark) .prose-ai strong {
+      color: #0284c7;
+    }
+    .prose-ai code {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.375rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+    }
+    .prose-ai blockquote {
+      border-right: 3px solid #00f59b;
+      padding-right: 0.75rem;
+      margin: 0.75rem 0;
+      background: rgba(16, 185, 129, 0.05);
+      border-radius: 0.375rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+
+    @keyframes pulse-dot {
+      0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+    .dot-1 { animation: pulse-dot 1.4s infinite ease-in-out 0s; }
+    .dot-2 { animation: pulse-dot 1.4s infinite ease-in-out 0.2s; }
+    .dot-3 { animation: pulse-dot 1.4s infinite ease-in-out 0.4s; }
+  </style>
+</head>
+
+<body class="selection:bg-emerald-500/30 selection:text-emerald-300 antialiased overflow-x-hidden">
+  
+  <div class="grid-pattern"></div>
+
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/2 -left-32 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- ============================================================== -->
+    <!-- NAVBAR -->
+    <!-- ============================================================== -->
+    <header class="sticky top-0 z-50 backdrop-blur-2xl bg-white/85 dark:bg-obsidian-950/90 border-b border-slate-200 dark:border-slate-800/80 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          
+          <!-- BRAND BADGE -->
+          <a href="/" class="brand-container flex items-center gap-3 group">
+            <div class="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/25 via-cyan-500/15 to-obsidian-900 border border-emerald-400/40 group-hover:border-emerald-300 transition-all shadow-md shadow-emerald-500/15 flex-shrink-0">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
+                <path d="M 46 154 L 94 42 C 96 37 104 37 106 42 L 154 154" stroke="#34d399" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 68 126 C 96 126 102 96 116 70 C 124 54 136 44 148 44 C 158 44 164 52 164 64 L 164 154" stroke="#00f59b" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="156" cy="44" r="9" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="3"/>
+                <circle cx="70" cy="126" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+                <circle cx="150" cy="146" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+              </svg>
+            </div>
+            <div class="flex items-center">
+              <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white font-sans uppercase leading-none">
+                AUTOMATA <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-400">IQ</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- ACTIONS -->
+          <div class="flex items-center gap-3">
+            
+            <!-- BACK TO MAIN BUTTON -->
+            <a href="/" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 border border-slate-200 dark:border-slate-800 transition-all">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              الرئيسية
+            </a>
+
+            <!-- THEME TOGGLE BUTTON -->
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center justify-center p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-800/80 border border-slate-300 dark:border-slate-700/80 text-slate-700 dark:text-slate-200 hover:border-emerald-500/50 transition-all shadow-sm" aria-label="التبديل بين الوضع النهاري والليلي" title="التبديل بين الوضع النهاري والليلي">
+              <i id="themeIcon" data-lucide="sun" class="w-4 h-4 text-amber-500 dark:text-emerald-400"></i>
+            </button>
+
+            <!-- WHATSAPP CTA -->
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noopener noreferrer" class="btn-start-project inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>تواصل واتساب</span>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ============================================================== -->
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      
+      <!-- HERO HEADER -->
+      <div id="heroHeaderSection" class="text-center max-w-2xl mx-auto mb-8">
+        
+        <!-- FREE AI TOOL BADGE -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 dark:text-emerald-300 text-xs font-black mb-4 shadow-sm">
+          <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>🪄 أداة مجانية بالذكاء الاصطناعي</span>
+        </div>
+
+        <!-- MAIN HEADING -->
+        <h1 class="font-heading font-black text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight leading-tight mb-3">
+          ابنِ خطة تطبيقك أو مشروعك
+        </h1>
+
+        <!-- SUBTITLE -->
+        <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+          مع <span class="font-bold text-emerald-600 dark:text-emeraldGlow">Automata IQ</span> مساعد ذكي يحول فكرتك إلى مشروع متكامل
+        </p>
+
+      </div>
+
+      <!-- 3-STEP PROCESS RIBBON -->
+      <div id="stepsRibbon" class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+        
+        <div class="precision-card rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emeraldGlow font-black text-sm flex-shrink-0">
+            1
+          </div>
+          <div class="text-right">
+            <h2 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white">✍️ الفكرة</h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">اكتب فكرتك أو اختر نوع مشروعك</p>
+          </div>
+        </div>
+
+        <div class="precision-card rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyanGlow font-black text-sm flex-shrink-0">
+            2
+          </div>
+          <div class="text-right">
+            <h2 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white">⚡ رد ذكي وخطة فورية</h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">هيكلة مسارات الأتمتة وحلول الذكاء الاصطناعي المناسبة</p>
+          </div>
+        </div>
+
+        <div class="precision-card rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emeraldGlow font-black text-sm flex-shrink-0">
+            3
+          </div>
+          <div class="text-right">
+            <h2 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white">📲 ارسلها واتساب لنا</h2>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">للبدء المباشر بالتنفيذ معنا فوراً</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- SECTION: كيف تبي مشروعك؟ (CATEGORY PICKER) -->
+      <!-- ============================================================== -->
+      <div id="categorySelectionSection" class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-heading font-black text-xl sm:text-2xl text-slate-900 dark:text-white">
+            كيف تبي مشروعك؟
+          </h2>
+          <span class="text-xs text-slate-500 dark:text-slate-400">اختر الفئة لتوليد الفكرة فوراً</span>
+        </div>
+
+        <!-- CATEGORY CARDS GRID -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          
+          <!-- Category 1 -->
+          <div onclick="selectCategoryAndSubmit('متجر إلكتروني وأتمتة مبيعات', 'أريد متجر إلكتروني متكامل (سلة / زد) مع أتمتة كاملة: موظف واتساب ذكي يسترجع السلات المتروكة 24/7، ويرسل تتبع الشحنات تلقائياً للعملاء، ويقترح منتجات متوافقة لزيادة المبيعات.')" class="category-chip precision-card rounded-2xl p-3.5 text-right group active" data-category="متجر إلكتروني وأتمتة مبيعات">
+            <div class="text-2xl mb-1.5">🛍️</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">متجر إلكتروني</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">سلة وزد، استرجاع سلات وتتبع شحنات</p>
+          </div>
+
+          <!-- Category 2 -->
+          <div onclick="selectCategoryAndSubmit('تطبيق جوال ومنصة خدمات', 'أريد تطبيق جوال ومنصة رقمية ذكية لتقديم الخدمات وحجز المواعيد مع نظام دفع إلكتروني (مدى، أبل باي، تابي وتمارا) وأتمتة إشعارات فورية عبر الواتساب.')" class="category-chip precision-card rounded-2xl p-3.5 text-right group" data-category="تطبيق جوال ومنصة خدمات">
+            <div class="text-2xl mb-1.5">📱</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">تطبيق جوال</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">حجوزات، خدمات عند الطلب ودفع إلكتروني</p>
+          </div>
+
+          <!-- Category 3 -->
+          <div onclick="selectCategoryAndSubmit('نظام أتمتة شركات و CRM', 'أريد نظام أتمتة عمليات لشركتنا: موظف استقبال وخدمة عملاء واتساب ذكي يصنف الاستفسارات، يربط مع نظام الـ CRM وجداول البيانات، ويرسل عروض الأسعار تلقائياً.')" class="category-chip precision-card rounded-2xl p-3.5 text-right group" data-category="نظام أتمتة شركات و CRM">
+            <div class="text-2xl mb-1.5">🏢</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">أتمتة شركات و CRM</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">كول سنتر واتساب ذكي، وتوليد عروض أسعار</p>
+          </div>
+
+          <!-- Category 4 -->
+          <div onclick="selectCategoryAndSubmit('رادار صفقات وعقارات', 'أريد رادار عقاري ذكي يرصد العروض والإعلانات العقارية تلقائياً، يطابقها مع طلبات المشترين المسجلين لدينا، ويرسل إشعارات فورية عبر الواتساب للصفقات اللقطة.')" class="category-chip precision-card rounded-2xl p-3.5 text-right group" data-category="رادار صفقات وعقارات">
+            <div class="text-2xl mb-1.5">🎯</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">رادار صفقات</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">مسح الإعلانات وتنبيهات واتساب فورية</p>
+          </div>
+
+          <!-- Category 5 -->
+          <div onclick="selectCategoryAndSubmit('بوت خدمة عملاء ومبيعات 24/7', 'أريد موظف ذكاء اصطناعي عبر واتساب يرد على استفسارات العملاء 24/7 باللهجة السعودية، يشرح الخدمات والمنتجات، ويقفل الصفقات بدون تدخل بشري.')" class="category-chip precision-card rounded-2xl p-3.5 text-right group" data-category="بوت خدمة عملاء ومبيعات 24/7">
+            <div class="text-2xl mb-1.5">💬</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">بوت خدمة عملاء 24/7</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">ردود فورية ومبيعات وإقفال صفقات</p>
+          </div>
+
+          <!-- Category 6 -->
+          <div onclick="focusCustomIdeaInput()" class="category-chip precision-card rounded-2xl p-3.5 text-right group" data-category="فكرة مخصصة أو مشروع مبتكر">
+            <div class="text-2xl mb-1.5">💡</div>
+            <h3 class="text-xs sm:text-sm font-black text-slate-900 dark:text-white group-hover:text-emerald-500 transition-colors">فكرة مخصصة</h3>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 leading-relaxed">اكتب فكرتك الحرة ودع المساعد يحللها</p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- PROMPT WORKSPACE CARD (INITIAL STATE) -->
+      <!-- ============================================================== -->
+      <div id="initialPromptCard" class="precision-card rounded-3xl p-5 sm:p-7 mb-8 shadow-2xl border-emerald-500/30">
+        
+        <div class="mb-3 text-right flex items-center justify-between">
+          <label for="projectIdeaInput" class="block font-heading font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+            اكتب تفاصيل فكرتك أو مشروعك:
+          </label>
+          <span class="text-xs text-emerald-600 dark:text-emeraldGlow font-mono font-bold">يرد عليك AI فوراً ⚡</span>
+        </div>
+
+        <div class="relative mb-4">
+          <textarea 
+            id="projectIdeaInput" 
+            rows="3" 
+            class="w-full bg-slate-50 dark:bg-obsidian-900 border border-slate-300 dark:border-slate-700/80 rounded-2xl p-4 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all font-sans resize-y leading-relaxed"
+            placeholder="اكتب فكرة مشروعك هنا (مثال: أريد متجر عطور على سلة مع بوت واتساب ذكي يرد على العملاء ويسترجع السلات المتروكة)..."
+          >أريد متجر إلكتروني متكامل (سلة / زد) مع أتمتة كاملة: موظف واتساب ذكي يسترجع السلات المتروكة 24/7، ويرسل تتبع الشحنات تلقائياً للعملاء، ويقترح منتجات متوافقة لزيادة المبيعات.</textarea>
+        </div>
+
+        <!-- TIMELINE & EXECUTION SPEED CHIPS -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+          
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-600 dark:text-slate-400">السرعة:</span>
+            <div class="flex gap-1.5">
+              <button onclick="setTimeline('تنفيذ فوري وسريع')" class="timeline-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-300">🚀 فوري وسريع</button>
+              <button onclick="setTimeline('خلال أسبوعين')" class="timeline-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400">خلال أسبوعين</button>
+            </div>
+          </div>
+
+          <!-- GENERATE & CHAT BUTTON -->
+          <button 
+            id="generatePlanBtn" 
+            onclick="submitIdeaToAI()" 
+            class="btn-start-project flex items-center justify-center gap-2 px-7 py-3 rounded-xl text-sm font-black w-full sm:w-auto shadow-lg cursor-pointer"
+          >
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>ابنِ الخطة وتحدث مع AI 🚀</span>
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- ============================================================== -->
+      <!-- INTERACTIVE AI CONVERSATION & PLAN VIEW (ACTIVE AFTER SUBMISSION) -->
+      <!-- ============================================================== -->
+      <div id="aiConversationContainer" class="hidden space-y-6 mb-12">
+        
+        <!-- TOP CONVERSATION HEADER -->
+        <div class="precision-card rounded-2xl p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 border-cyan-500/40">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-emerald-400/50 flex items-center justify-center text-emeraldGlow font-black text-sm">
+              AI
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-heading font-black text-base text-slate-900 dark:text-white">مساعد Automata IQ الذكي</h3>
+                <span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-300 font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">متصل وجاهز 🟢</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400">استشاري التخطيط والأتمتة الذكية لمشروعك</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="resetIdeaWorkspace()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-emerald-500 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 transition-all">
+              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+              <span>فكرة جديدة</span>
+            </button>
+
+            <button onclick="sendWholeChatToWhatsApp()" class="btn-start-project inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>أرسل لواتساب Automata IQ 📲</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CHAT THREAD -->
+        <div id="chatThread" class="space-y-6">
+          <!-- Dynamically populated messages will appear here -->
+        </div>
+
+        <!-- TYPING INDICATOR -->
+        <div id="aiTypingIndicator" class="hidden precision-card rounded-2xl p-5 border-emerald-500/30 bg-emerald-500/5">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-500 flex items-center justify-center font-bold text-xs flex-shrink-0">
+              AI
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-xs font-bold text-emerald-600 dark:text-emerald-300 font-heading">
+                المساعد الذكي Automata IQ يكتب الرد...
+              </span>
+              <div class="flex items-center gap-1 text-emerald-500">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 dot-1"></span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 dot-2"></span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500 dot-3"></span>
+                <span class="text-[11px] text-slate-400 font-mono mr-2">تحليل الفكرة • رسم مسارات Make & n8n</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUGGESTED FOLLOW-UP CHIPS -->
+        <div id="suggestedChips" class="flex flex-wrap gap-2 pt-2">
+          <span class="text-xs font-bold text-slate-500 dark:text-slate-400 self-center">اسأل المساعد:</span>
+          <button onclick="sendQuickPrompt('كم تكلفة بناء هذا المشروع مع Automata IQ؟')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 hover:text-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+            💰 كم تكلفة التنفيذ؟
+          </button>
+          <button onclick="sendQuickPrompt('كيف يتم الربط مع سلة وزد وبوابة الدفع؟')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 hover:text-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+            🛍️ كيف يتم الربط مع سلة وزد؟
+          </button>
+          <button onclick="sendQuickPrompt('كيف يعمل موظف الواتساب الذكي 24/7؟')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 hover:text-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+            🤖 كيف يعمل الموظف الرقمي؟
+          </button>
+          <button onclick="sendQuickPrompt('ما هو الوقت المتوقع لتسليم المشروع بالكامل؟')" class="px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 hover:border-emerald-500 hover:text-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+            ⏱️ كم مدة التسليم؟
+          </button>
+        </div>
+
+        <!-- INTERACTIVE CHAT INPUT BAR -->
+        <div class="precision-card rounded-3xl p-4 sm:p-5 border-emerald-500/40 shadow-2xl sticky bottom-4 z-40 bg-white/95 dark:bg-obsidian-950/95">
+          <form onsubmit="handleFollowUpChatSubmit(event)" class="flex gap-2 items-center">
+            <input 
+              type="text" 
+              id="followUpInput" 
+              placeholder="اكتب ردك أو استفسارك هنا (مثال: هل يدعم تابي وتمارا؟ أو أضف موظف مبيعات إضافي)..." 
+              class="flex-grow bg-slate-50 dark:bg-obsidian-900 border border-slate-300 dark:border-slate-700 rounded-2xl px-4 py-3.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
+            />
+            <button 
+              type="submit" 
+              id="followUpSubmitBtn"
+              class="btn-start-project px-5 sm:px-7 py-3.5 rounded-2xl font-black text-xs sm:text-sm flex items-center gap-1.5 flex-shrink-0"
+            >
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">إرسال للذكاء الاصطناعي</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- ACTION FOOTER BAR -->
+        <div class="precision-card rounded-2xl p-4 sm:p-6 flex flex-wrap items-center justify-between gap-4 border-emerald-500/30">
+          <div class="flex items-center gap-3">
+            <button onclick="copyLatestAiResponse()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>نسخ خطة AI</span>
+            </button>
+
+            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+              <span>طباعة</span>
+            </button>
+          </div>
+
+          <button onclick="sendWholeChatToWhatsApp()" class="btn-start-project px-6 py-3 rounded-xl text-sm font-black flex items-center gap-2">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>أرسل الخطة لواتساب Automata IQ للبدء الحين 🚀</span>
+          </button>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- ============================================================== -->
+    <!-- FOOTER -->
+    <!-- ============================================================== -->
+    <footer class="border-t border-slate-200 dark:border-slate-800/80 bg-white/70 dark:bg-obsidian-950/90 py-8 text-center text-xs text-slate-500 dark:text-slate-400 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="font-heading font-black text-emerald-500">Automata IQ</span>
+          <span>• أداة تخطيط المشاريع والأتمتة الذكية</span>
+        </div>
+        <div class="flex items-center gap-4 text-xs font-semibold">
+          <a href="/" class="hover:text-emerald-500 transition-colors">الرئيسية</a>
+          <span>•</span>
+          <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" class="hover:text-emerald-500 transition-colors">ابدأ مشروعك الحين</a>
+          <span>•</span>
+          <span>المملكة العربية السعودية 🇸🇦</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- JAVASCRIPT CONVERSATIONAL ENGINE -->
+  <!-- ============================================================== -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Global State
+    let selectedCategoryName = "متجر إلكتروني وأتمتة مبيعات";
+    let selectedTimeline = "تنفيذ فوري وسريع";
+    let chatConversation = [];
+    let lastAiResponseText = "";
+
+    // Theme Management
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+      applyTheme();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      applyTheme();
+    }
+
+    function applyTheme() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (themeIcon) {
+        if (isDark) {
+          themeIcon.setAttribute('data-lucide', 'sun');
+          themeIcon.className = "w-4 h-4 text-amber-400";
+        } else {
+          themeIcon.setAttribute('data-lucide', 'moon');
+          themeIcon.className = "w-4 h-4 text-emerald-600";
+        }
+        lucide.createIcons();
+      }
+    }
+
+    // Category Selector
+    function selectCategoryAndSubmit(category, defaultText) {
+      selectedCategoryName = category;
+      const chips = document.querySelectorAll('.category-chip');
+      chips.forEach(chip => {
+        if (chip.getAttribute('data-category') === category) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      const input = document.getElementById('projectIdeaInput');
+      if (input && defaultText) {
+        input.value = defaultText;
+      }
+    }
+
+    function focusCustomIdeaInput() {
+      selectedCategoryName = "فكرة مخصصة أو مشروع مبتكر";
+      const chips = document.querySelectorAll('.category-chip');
+      chips.forEach(chip => {
+        if (chip.getAttribute('data-category') === "فكرة مخصصة أو مشروع مبتكر") {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+
+      const input = document.getElementById('projectIdeaInput');
+      if (input) {
+        input.value = "";
+        input.placeholder = "اكتب فكرتك المبتكرة هنا بالتفصيل وسيقوم الذكاء الاصطناعي بتحليلها وبناء خطتها فوراً...";
+        input.focus();
+      }
+    }
+
+    function setTimeline(timeline) {
+      selectedTimeline = timeline;
+      const buttons = document.querySelectorAll('.timeline-btn');
+      buttons.forEach(btn => {
+        if (btn.textContent.includes(timeline.slice(0, 5))) {
+          btn.className = "timeline-btn px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-300";
+        } else {
+          btn.className = "timeline-btn px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400";
+        }
+      });
+    }
+
+    function resetIdeaWorkspace() {
+      document.getElementById('aiConversationContainer').classList.add('hidden');
+      document.getElementById('initialPromptCard').classList.remove('hidden');
+      document.getElementById('categorySelectionSection').classList.remove('hidden');
+      document.getElementById('heroHeaderSection').classList.remove('hidden');
+      document.getElementById('stepsRibbon').classList.remove('hidden');
+      
+      const input = document.getElementById('projectIdeaInput');
+      if (input) {
+        input.focus();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Submit Idea to AI (Main Initial Interaction)
+    async function submitIdeaToAI() {
+      const input = document.getElementById('projectIdeaInput');
+      const ideaText = input ? input.value.trim() : '';
+
+      if (!ideaText) {
+        alert('الرجاء كتابة فكرة المشروع أو التطبيق أولاً!');
+        if (input) input.focus();
+        return;
+      }
+
+      // Hide category and initial cards, show conversation view
+      document.getElementById('initialPromptCard').classList.add('hidden');
+      document.getElementById('categorySelectionSection').classList.add('hidden');
+      document.getElementById('heroHeaderSection').classList.add('hidden');
+      document.getElementById('stepsRibbon').classList.add('hidden');
+      
+      const convContainer = document.getElementById('aiConversationContainer');
+      convContainer.classList.remove('hidden');
+      convContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Clear existing chat or reset
+      chatConversation = [];
+      const chatThread = document.getElementById('chatThread');
+      chatThread.innerHTML = '';
+
+      // 1. Add User Message
+      appendUserMessage(ideaText);
+      chatConversation.push({ role: 'user', text: ideaText });
+
+      // 2. Show Typing Indicator
+      const typingIndicator = document.getElementById('aiTypingIndicator');
+      typingIndicator.classList.remove('hidden');
+
+      // 3. Request AI Response
+      try {
+        const response = await fetch('/api/plan-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: [
+              {
+                role: 'user',
+                text: `مرحباً Automata IQ، هذي فكرة مشروعي وأريد أن ترد علي بتحليل كامل وخطة تنفيذية وأتمتة ذكية وموظفين رقميين:\n\nتصنيف المشروع: ${selectedCategoryName}\nالسرعة المفضلة: ${selectedTimeline}\nتفاصيل الفكرة: ${ideaText}`
+              }
+            ]
+          })
+        });
+
+        const data = await response.json();
+        typingIndicator.classList.add('hidden');
+
+        if (data.success && data.reply) {
+          lastAiResponseText = data.reply;
+          chatConversation.push({ role: 'model', text: data.reply });
+          appendAiMessage(data.reply, true);
+        } else {
+          // Fallback rich conversational response
+          const fallbackReply = generateFallbackChatReply(ideaText, selectedCategoryName);
+          lastAiResponseText = fallbackReply;
+          chatConversation.push({ role: 'model', text: fallbackReply });
+          appendAiMessage(fallbackReply, true);
+        }
+      } catch (err) {
+        console.error('Error generating AI plan reply:', err);
+        typingIndicator.classList.add('hidden');
+        const fallbackReply = generateFallbackChatReply(ideaText, selectedCategoryName);
+        lastAiResponseText = fallbackReply;
+        chatConversation.push({ role: 'model', text: fallbackReply });
+        appendAiMessage(fallbackReply, true);
+      } finally {
+        lucide.createIcons();
+        const followUpInput = document.getElementById('followUpInput');
+        if (followUpInput) followUpInput.focus();
+      }
+    }
+
+    // Follow-up Chat Message Handler
+    async function handleFollowUpChatSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('followUpInput');
+      const text = input ? input.value.trim() : '';
+      if (!text) return;
+
+      appendUserMessage(text);
+      chatConversation.push({ role: 'user', text });
+      input.value = '';
+
+      const typingIndicator = document.getElementById('aiTypingIndicator');
+      typingIndicator.classList.remove('hidden');
+      typingIndicator.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      try {
+        const response = await fetch('/api/plan-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            messages: chatConversation
+          })
+        });
+
+        const data = await response.json();
+        typingIndicator.classList.add('hidden');
+
+        if (data.success && data.reply) {
+          lastAiResponseText = data.reply;
+          chatConversation.push({ role: 'model', text: data.reply });
+          appendAiMessage(data.reply, false);
+        } else {
+          const fallbackReply = "أهلاً بك! بالتأكيد يمكننا تطبيق هذا التعديل وتخصيص مسارات الربط مع n8n و Make وموظف الواتساب الذكي بدقة حسب متطلباتك. يسعدنا البدء بتنفيذ المشروع فوراً عبر محادثة فريقنا على الواتساب 🚀.";
+          lastAiResponseText = fallbackReply;
+          chatConversation.push({ role: 'model', text: fallbackReply });
+          appendAiMessage(fallbackReply, false);
+        }
+      } catch (err) {
+        console.error('Follow-up error:', err);
+        typingIndicator.classList.add('hidden');
+        const fallbackReply = "تم تسجيل طلبك بدقة، وسيقوم فريق Automata IQ بتضمين كافة هذه التفاصيل والمسارات عند بدء العمل الفعلي معك على الواتساب 🚀.";
+        appendAiMessage(fallbackReply, false);
+      } finally {
+        lucide.createIcons();
+      }
+    }
+
+    function sendQuickPrompt(promptText) {
+      const input = document.getElementById('followUpInput');
+      if (input) {
+        input.value = promptText;
+        handleFollowUpChatSubmit();
+      }
+    }
+
+    // Append User Message to Thread
+    function appendUserMessage(text) {
+      const chatThread = document.getElementById('chatThread');
+      const userDiv = document.createElement('div');
+      userDiv.className = "flex items-start gap-3 justify-end text-right";
+      userDiv.innerHTML = `
+        <div class="max-w-[90%] sm:max-w-[80%] p-4 sm:p-5 rounded-3xl rounded-tl-sm bg-gradient-to-l from-emerald-500 to-emerald-600 text-obsidian-950 shadow-lg font-medium text-sm leading-relaxed">
+          <div class="flex items-center justify-between gap-3 mb-1.5 pb-1 border-b border-obsidian-950/15">
+            <span class="text-[11px] font-bold font-mono">أنت (صاحب المشروع)</span>
+            <span class="text-[10px] font-mono opacity-80">${new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+          <p class="whitespace-pre-wrap font-sans text-slate-950 font-semibold">${escapeHtml(text)}</p>
+        </div>
+        <div class="w-9 h-9 rounded-xl bg-slate-200 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 flex items-center justify-center font-bold text-xs flex-shrink-0 border border-slate-300 dark:border-slate-700">
+          👤
+        </div>
+      `;
+      chatThread.appendChild(userDiv);
+      userDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Append AI Message to Thread
+    function appendAiMessage(rawText, isFirstPlanMessage) {
+      const chatThread = document.getElementById('chatThread');
+      const aiDiv = document.createElement('div');
+      aiDiv.className = "flex items-start gap-3 text-right";
+
+      const parsedHtml = marked.parse(rawText);
+
+      aiDiv.innerHTML = `
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/30 to-cyan-500/30 border border-emerald-400/50 flex items-center justify-center text-emeraldGlow font-black text-sm flex-shrink-0 mt-1 shadow-md">
+          AI
+        </div>
+        <div class="precision-card rounded-3xl rounded-tr-sm p-5 sm:p-7 flex-grow shadow-2xl border-emerald-500/40 text-slate-800 dark:text-slate-200">
+          
+          <div class="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="font-heading font-black text-sm text-slate-900 dark:text-white">مساعد Automata IQ الذكي</span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 font-mono text-[10px] font-bold">خطة وأتمتة مخصصة 🚀</span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-400">${new Date().toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' })}</span>
+          </div>
+
+          <!-- PARSED MARKDOWN BODY -->
+          <div class="prose-ai text-xs sm:text-sm leading-relaxed font-sans mb-6">
+            ${parsedHtml}
+          </div>
+
+          <!-- IN-MESSAGE QUICK ACTIONS -->
+          <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <button onclick="copySpecificMessage(this)" data-content="${escapeHtml(rawText)}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 hover:text-emerald-500 border border-slate-200 dark:border-slate-700 transition-all">
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                <span>نسخ الرد</span>
+              </button>
+            </div>
+
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodeURIComponent('مرحباً Automata IQ، قمت بمناقشة مشروعي مع المساعد الذكي وأرغب ببدء تنفيذه معكم:\n\n' + rawText.slice(0, 300) + '...')}" target="_blank" rel="noopener noreferrer" class="btn-start-project inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>ابدأ تنفيذ هذه الخطة عبر واتساب 📲</span>
+            </a>
+          </div>
+
+        </div>
+      `;
+      chatThread.appendChild(aiDiv);
+      aiDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      lucide.createIcons();
+    }
+
+    // Fallback Rich Reply Generator
+    function generateFallbackChatReply(idea, category) {
+      return `### يا هلا بك! فكرة مشروعك واعدة وممتازة جداً 🚀
+
+قمت بتحليل تفاصيل مشروعك (**${category}**)، وهذه هي خطة الأتمتة والذكاء الاصطناعي المقترحة من **Automata IQ**:
+
+---
+
+#### 💡 1. تحليل الفكرة والجدوى
+مشروعك يحل مشكلة حقيقية في السوق السعودي عبر تحويل العمليات التقليدية إلى منظومة رقمية ذكية تعمل بشكل آلي، مما يقلص تكلفة التشغيل بنسبة **80%** ويزيد سرعة الاستجابة لعملائك لأقل من ثانيتين.
+
+#### ⚡ 2. منظومة الأتمتة الموصى بها (Automation Stack)
+- **Make & n8n:** بناء سيناريوهات الربط السحابي والـ Webhooks بين جميع أجزاء المشروع.
+- **WhatsApp Cloud API:** قناة التواصل الرئيسية لخدمة العملاء، الإشعارات، والمبيعات التلقائية.
+- **منصة التجارة / النظام السحابي:** الربط المباشر مع سلة / زد وبوابات الدفع (مدى، Apple Pay، تمارا، تابي).
+- **قواعد البيانات السريعة:** مزامنة المخزون والطلبات والبيانات لحظياً.
+
+#### 🤖 3. فريق الموظفين الرقميين المقترح لمشروعك (AI Workforce)
+1. **فارس (موظف المبيعات وخدمة العملاء الذكي 24/7):**
+   - يستقبل العملاء عبر واتساب، يجيب على كل الاستفسارات باللهجة السعودية، ويقترح المنتجات، ويقفل عمليات البيع.
+2. **ساهر (موظف العمليات واللوجستيات الرقمي):**
+   - يسترجع السلات المتروكة تلقائياً، يصدر بوالص الشحن، ويرسل أرقام التتبع للعملاء لحظة بلحظة.
+
+#### 📋 4. مراحل الإطلاق والتنفيذ
+- **المرحلة الأولى:** بناء وتجهيز مسارات الربط في Make و n8n.
+- **المرحلة الثانية:** تدريب وتلقيم نماذج الذكاء الاصطناعي ببيانات متجرك وخدماتك.
+- **المرحلة الثالثة:** التشغيل الحي، الاختبار الشامل، وإطلاق المنظومة بالكامل.
+
+---
+
+> 💰 **الوفر المتوقع:** توفير أكثر من **80%** من تكاليف الرواتب وخدمة العملاء مع مضاعفة المبيعات 3 أضعاف.
+
+هل ترغب بإضافة ميزات إضافية معينة أو البدء المباشر معنا بالتنفيذ؟`;
+    }
+
+    // Helper: Escape HTML
+    function escapeHtml(string) {
+      const entityMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      };
+      return String(string).replace(/[&<>"']/g, s => entityMap[s]);
+    }
+
+    // Copy specific message
+    function copySpecificMessage(btn) {
+      const content = btn.getAttribute('data-content');
+      if (!content) return;
+      navigator.clipboard.writeText(content).then(() => {
+        alert('تم نسخ الرد بنجاح! 📋');
+      }).catch(() => {
+        alert('تم النسخ.');
+      });
+    }
+
+    // Copy Latest AI Response
+    function copyLatestAiResponse() {
+      if (!lastAiResponseText) {
+        alert('لا توجد خطة منسوخة بعد.');
+        return;
+      }
+      navigator.clipboard.writeText(lastAiResponseText).then(() => {
+        alert('تم نسخ خطة الذكاء الاصطناعي بنجاح! 📋');
+      });
+    }
+
+    // Send Whole Chat to WhatsApp
+    function sendWholeChatToWhatsApp() {
+      let fullSummary = "مرحباً Automata IQ، هذي خطة مشروعي والمحادثة التي أنشأتها عبر المساعد الذكي وأرغب ببدء تنفيذها معكم:\n\n";
+      
+      if (chatConversation.length > 0) {
+        fullSummary += `*فكرة مشروعي:* ${chatConversation[0].text}\n\n`;
+        if (lastAiResponseText) {
+          fullSummary += `*خطة المساعد الذكي:* ${lastAiResponseText.slice(0, 450)}...\n\n`;
+        }
+      }
+      fullSummary += "أرغب ببدء التنفيذ معكم فوراً 🚀";
+
+      const encoded = encodeURIComponent(fullSummary);
+      window.open(`https://wa.me/message/WWNJZ6JUPB5GP1?text=${encoded}`, '_blank');
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+    });
+  </script>
+</body>
+</html>

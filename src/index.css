@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: "Alexandria", "IBM Plex Sans Arabic", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+body {
+  background-color: #030712; /* Very deep space slate */
+  color: #f3f4f6;
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+  line-height: 1.7;
+  letter-spacing: -0.01em;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 0%, rgba(245, 158, 11, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
+    linear-gradient(180deg, rgba(3, 7, 18, 1) 0%, rgba(2, 6, 23, 1) 100%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: "Alexandria", "IBM Plex Sans Arabic", sans-serif;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+}
+
+/* Custom grid overlay with glowing intersection lines */
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 50px 50px;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 60%, transparent 100%);
+  z-index: 1;
+}
+
+/* Animated glow pulse effect */
+@keyframes ambientGlow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(15px, -20px) scale(1.15);
+    opacity: 0.45;
+  }
+}
+
+.ambient-orb {
+  animation: ambientGlow 15s ease-in-out infinite alternate;
+}
+
+/* Custom scrollbars for clean dashboards */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Card hover glow flash effect (وميض) */
+.glowing-card {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glowing-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to bottom right, rgba(6, 182, 212, 0.15), rgba(245, 158, 11, 0.15));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  opacity: 0.4;
+}
+.glowing-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.15);
+}
+.glowing-card:hover::before {
+  background: linear-gradient(to bottom right, rgba(6, 182, 212, 0.4), rgba(245, 158, 11, 0.4));
+  opacity: 1;
+}
+
+/* Shine sweep animation on elements */
+@keyframes shineSweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.shiny-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shiny-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.08), transparent);
+  transform: skewX(-20deg);
+  animation: shineSweep 4s infinite linear;
+}
+

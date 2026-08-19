@@ -1,0 +1,2134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Automata IQ | منظومة الموظفين الرقميين والأتمتة الذاتية</title>
+  <meta name="title" content="Automata IQ | الموظفون الرقميون والأتمتة الذكية لأعمالك" />
+  <meta name="description" content="نحوّل عملياتك اليومية المعقدة إلى منظومات ذكاء اصطناعي وأتمتة سحابية تعمل ذاتياً 24/7 وتوفر أكثر من 80% من تكاليف التشغيل." />
+  <meta name="theme-color" content="#010308" />
+
+  <!-- Favicon / Logo -->
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <link rel="apple-touch-icon" href="/logo.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Automata IQ | شغّل موظفك الرقمي وريّح بالك من الشغل اليدوي" />
+  <meta property="og:description" content="منظومة أتمتة سحابية وذكاء اصطناعي متطور لخدمة العملاء، رصد الصفقات، وإدارة المبيعات والعمليات على مدار الساعة." />
+
+  <!-- Google Fonts: Alexandria (Headings) + IBM Plex Sans Arabic (Body) + JetBrains Mono (Code/Numbers) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"IBM Plex Sans Arabic"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            heading: ['"Alexandria"', '"IBM Plex Sans Arabic"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          colors: {
+            obsidian: {
+              950: '#010308',
+              900: '#030712',
+              850: '#060b18',
+              800: '#0b1326',
+              750: '#101b33',
+            },
+            emeraldGlow: {
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              DEFAULT: '#00f59b',
+            },
+            cyanGlow: {
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              DEFAULT: '#00f0ff',
+            },
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ============================================================== */
+    /* DYNAMIC LIGHT & DARK MODE THEMING VARIABLES */
+    /* ============================================================== */
+    :root {
+      --bg-deep: #f8fafc;
+      --card-bg: #ffffff;
+      --border-laser: #e2e8f0;
+      --border-cyan-laser: #e2e8f0;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+    }
+
+    html.dark {
+      --bg-deep: #010308;
+      --card-bg: rgba(6, 11, 24, 0.88);
+      --border-laser: rgba(16, 185, 129, 0.25);
+      --border-cyan-laser: rgba(0, 240, 255, 0.25);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.75;
+      letter-spacing: -0.01em;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: 'Alexandria', 'IBM Plex Sans Arabic', sans-serif;
+      letter-spacing: -0.015em;
+      line-height: 1.5;
+    }
+
+    html.dark body {
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 40%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 40%),
+        radial-gradient(at 50% 50%, rgba(1, 3, 8, 0.95) 0px, transparent 100%),
+        linear-gradient(180deg, #010308 0%, #030712 50%, #010308 100%);
+      background-attachment: fixed;
+    }
+
+    html:not(.dark) body {
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 45%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.05) 0px, transparent 45%),
+        linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
+      background-attachment: fixed;
+    }
+
+    #neuralCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.65;
+    }
+
+    .grid-pattern {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: 
+        linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse at 50% 40%, black 50%, transparent 92%);
+      z-index: 0;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .precision-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-laser);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    html:not(.dark) .precision-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+    }
+
+    .precision-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.7) 30%, rgba(0, 240, 255, 0.8) 70%, transparent 100%);
+      opacity: 0.7;
+    }
+
+    html:not(.dark) .precision-card::after {
+      opacity: 0.35;
+    }
+
+    .precision-card:hover {
+      border-color: rgba(0, 245, 155, 0.65);
+      box-shadow: 0 18px 42px -10px rgba(16, 185, 129, 0.25);
+      transform: translateY(-4px);
+    }
+
+    html:not(.dark) .precision-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .precision-card-cyan {
+      border-color: var(--border-cyan-laser);
+    }
+    .precision-card-cyan::after {
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 240, 255, 0.8) 50%, transparent 100%);
+    }
+    .precision-card-cyan:hover {
+      border-color: rgba(0, 240, 255, 0.7);
+      box-shadow: 0 18px 42px -10px rgba(6, 182, 212, 0.25);
+    }
+
+    .btn-start-project {
+      background: linear-gradient(135deg, #00f59b 0%, #10b981 45%, #06b6d4 100%);
+      color: #010308;
+      font-weight: 800;
+      box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.55);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-start-project:hover {
+      background: linear-gradient(135deg, #34d399 0%, #00f59b 50%, #22d3ee 100%);
+      box-shadow: 0 14px 38px -2px rgba(16, 185, 129, 0.75);
+      transform: translateY(-2px) scale(1.02);
+    }
+
+    .brand-container {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 1rem;
+      padding: 0.35rem 0.75rem;
+      transition: all 0.3s ease;
+    }
+    .brand-container:hover {
+      border-color: rgba(0, 245, 155, 0.5);
+      box-shadow: 0 0 20px rgba(0, 245, 155, 0.15);
+    }
+  </style>
+</head>
+
+<body class="selection:bg-emerald-500/30 selection:text-emerald-300 antialiased overflow-x-hidden">
+  
+  <div class="grid-pattern"></div>
+
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-32 right-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/2 -left-32 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div class="relative z-10 flex flex-col min-h-screen">
+
+    <!-- ============================================================== -->
+    <!-- 1. STICKY NAVBAR WITH THEME TOGGLE & HIGH-TECH LOGO -->
+    <!-- ============================================================== -->
+    <header class="sticky top-0 z-50 backdrop-blur-2xl bg-white/85 dark:bg-obsidian-950/90 border-b border-slate-200 dark:border-slate-800/80 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          
+          <!-- TOP-RIGHT ELEVATED BRAND BADGE -->
+          <a href="#" class="brand-container flex items-center gap-3 group">
+            <div class="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/25 via-cyan-500/15 to-obsidian-900 border border-emerald-400/40 group-hover:border-emerald-300 transition-all shadow-md shadow-emerald-500/15 flex-shrink-0">
+              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-7 h-7">
+                <path d="M 46 154 L 94 42 C 96 37 104 37 106 42 L 154 154" stroke="#34d399" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M 68 126 C 96 126 102 96 116 70 C 124 54 136 44 148 44 C 158 44 164 52 164 64 L 164 154" stroke="#00f59b" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="156" cy="44" r="9" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="3"/>
+                <circle cx="70" cy="126" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+                <circle cx="150" cy="146" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+              </svg>
+            </div>
+            <div class="flex items-center">
+              <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white font-sans uppercase leading-none">
+                AUTOMATA <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-400">IQ</span>
+              </span>
+            </div>
+          </a>
+
+          <!-- Navigation Links -->
+          <nav class="hidden xl:flex items-center gap-8 text-sm font-medium text-slate-700 dark:text-slate-300">
+            <a href="#services" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">خدماتنا</a>
+            <a href="#packages" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors font-bold text-emerald-600 dark:text-emerald-400">باقاتنا والمنظومات</a>
+            <a href="#testimonials" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">آراء العملاء</a>
+            <a href="#blog" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">المدونة</a>
+            <a href="#faq" class="hover:text-emerald-500 dark:hover:text-emerald-400 transition-colors">الأسئلة الشائعة</a>
+          </nav>
+
+          <!-- Actions: Daytime/Nighttime Toggle Button + Magnetic CTA -->
+          <div class="flex items-center gap-3">
+            
+            <!-- THEME SWITCHER BUTTON (نهاري / ليلي) -->
+            <button
+              id="themeToggleBtn"
+              onclick="toggleTheme()"
+              class="flex items-center justify-center p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 hover:border-emerald-500/50 transition-all shadow-sm"
+              aria-label="التبديل بين الوضع النهاري والليلي"
+              title="التبديل بين الوضع النهاري والليلي"
+            >
+              <i id="themeSunIcon" data-lucide="sun" class="w-4 h-4 text-amber-500 hidden"></i>
+              <i id="themeMoonIcon" data-lucide="moon" class="w-4 h-4 text-cyan-400"></i>
+            </button>
+
+            <!-- Magnetic "ابدأ مشروعك الحين" Button -->
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1"
+              target="_blank"
+              rel="noreferrer"
+              class="hidden sm:inline-flex items-center gap-2 px-6 py-2.5 rounded-xl btn-start-project text-sm transition-all font-heading"
+            >
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ مشروعك الحين</span>
+              <i data-lucide="arrow-left" class="w-4 h-4 text-obsidian-950"></i>
+            </a>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobileMenuBtn" class="xl:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-300 dark:border-slate-800 text-slate-700 dark:text-slate-300" aria-label="القائمة">
+              <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden xl:hidden py-4 border-t border-slate-200 dark:border-slate-800 space-y-2 bg-white/95 dark:bg-obsidian-950/95 backdrop-blur-2xl">
+          <a href="#services" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-emerald-500 text-sm font-medium">خدماتنا</a>
+          <a href="#packages" class="block px-3 py-2 rounded-lg text-emerald-600 dark:text-emerald-400 font-bold hover:bg-slate-100 dark:hover:bg-slate-900 text-sm">باقاتنا والمنظومات</a>
+          <a href="#testimonials" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-emerald-500 text-sm font-medium">آراء العملاء</a>
+          <a href="#blog" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-emerald-500 text-sm font-medium">المدونة</a>
+          <a href="#faq" class="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-emerald-500 text-sm font-medium">الأسئلة الشائعة</a>
+          <a
+            href="https://wa.me/message/WWNJZ6JUPB5GP1"
+            target="_blank"
+            rel="noreferrer"
+            class="block px-3 py-3 rounded-xl btn-start-project text-center font-bold text-sm shadow-md"
+          >
+            ابدأ مشروعك الحين عبر WhatsApp 🚀
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- 2. HERO SECTION (Saudi Business Tone) -->
+    <!-- ============================================================== -->
+    <section class="relative pt-16 pb-20 lg:pt-28 lg:pb-32 overflow-hidden text-center">
+      <canvas id="neuralCanvas"></canvas>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        <div class="reveal inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/15 via-cyan-500/10 to-emerald-500/15 border border-emerald-500/40 text-emerald-700 dark:text-emerald-300 text-xs sm:text-sm font-semibold mb-8 backdrop-blur-md shadow-lg shadow-emerald-500/10">
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span>⚡ شريكك الاستراتيجي في هندسة الأتمتة والذكاء الاصطناعي المؤسسي</span>
+        </div>
+
+        <h1 class="reveal text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 dark:text-white font-heading leading-normal sm:leading-relaxed lg:leading-[1.4] max-w-5xl mx-auto mb-6 tracking-normal">
+          ارتقِ بعمليات منشأتك..<br class="hidden sm:block" />
+          <span class="inline-block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-emerald-400 to-cyan-500 dark:from-emerald-300 dark:via-emerald-400 dark:to-cyan-300 pb-1">
+            إلى مستوى الأتمتة والذكاء الاصطناعي الكامل
+          </span>
+        </h1>
+
+        <p class="reveal text-lg sm:text-xl text-slate-700 dark:text-slate-200 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+          نصمم ونبني بنية تحتية رقمية ذكية تربط تطبيقاتك وبرامجك الإدارية بنماذج ذكاء اصطناعي متطورة؛ تتولى خدمة العملاء، اقتناص الصفقات، ومزامنة المبيعات والمخزون بدقة <span class="text-emerald-600 dark:text-emerald-400 font-bold">99.9%</span> وبلا أي تدخل يدوي.
+        </p>
+
+        <!-- Precision Value Banner -->
+        <div class="reveal max-w-2xl mx-auto mb-10 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-slate-100/90 dark:via-obsidian-900/95 to-cyan-500/10 border border-emerald-500/40 backdrop-blur-md shadow-xl flex items-center justify-center gap-4 text-right">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center flex-shrink-0 text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="shield-check" class="w-7 h-7"></i>
+          </div>
+          <div>
+            <h4 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white font-heading">
+              🛡️ ربط آمن 100% مع تطبيقاتك اليومية بدون أي تعقيد
+            </h4>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-0.5">
+              نربط منظومة الأتمتة بمتجرك، واتساب، وبرامج المحاسبة لتشتغل لحالها وبأعلى معايير السرية والتشفير.
+            </p>
+          </div>
+        </div>
+
+        <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+          <a
+            href="https://wa.me/message/WWNJZ6JUPB5GP1"
+            target="_blank"
+            rel="noreferrer"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl btn-start-project text-base transition-all font-heading shadow-2xl"
+          >
+            <i data-lucide="rocket" class="w-5 h-5 text-obsidian-950"></i>
+            <span>ابدأ مشروعك الحين 🚀</span>
+          </a>
+
+          <!-- PLAN WITH AI BUTTON -->
+          <a 
+            href="/plan" 
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500/15 via-cyan-500/15 to-emerald-500/15 hover:from-emerald-500/25 hover:to-cyan-500/25 border-2 border-emerald-500/50 hover:border-emerald-400 text-slate-900 dark:text-white font-heading font-black text-base transition-all backdrop-blur-sm hover:scale-105 shadow-xl shadow-emerald-500/10"
+          >
+            <i data-lucide="sparkles" class="w-5 h-5 text-emerald-500 dark:text-emerald-400 animate-pulse"></i>
+            <span>خطط لمشروعك مع AI (مجاناً) 🪄</span>
+          </a>
+
+          <a href="#services" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-slate-100 dark:bg-obsidian-900/90 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700/90 hover:border-emerald-500/60 text-slate-900 dark:text-slate-100 font-bold text-base transition-all backdrop-blur-sm hover:scale-105 shadow-md">
+            <i data-lucide="layers" class="w-5 h-5 text-emerald-500 dark:text-emerald-400"></i>
+            <span>استكشف خدماتنا</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 3. SERVICES SECTION (خدماتنا) -->
+    <!-- ============================================================== -->
+    <section id="services" class="py-24 bg-slate-50 dark:bg-obsidian-900/60 border-y border-slate-200 dark:border-slate-800/80 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal text-center max-w-4xl mx-auto mb-16 px-4">
+          <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white font-heading leading-normal sm:leading-relaxed lg:leading-[1.45] mb-5 tracking-normal">
+            لا تضيّع وقتك في الروتين..<br class="hidden sm:block" />
+            <span class="inline-block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-emerald-400 to-cyan-400 pb-1">
+              خل التقنية تشيل عنك
+            </span>
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+            بدل ما تغرق بالتفاصيل اليومية، خل الأنظمة الذكية تنجزها لك في ثواني وبدون أخطاء.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <div class="reveal precision-card p-8 rounded-3xl group">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="bot" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">بناء وتدريب الموظفين الرقميين</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              نصمم لك وكيل ذكاء اصطناعي مخصص لخدمة العملاء والمبيعات ومراقبة الجودة، شغال 24 ساعة بدون إجازات أو تأخير.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> تدريب كامل على ملفات وسياسة شركتك.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> يفهم اللهجة المحلية وسياق الأعمال.</li>
+            </ul>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-8 rounded-3xl group" style="transition-delay: 100ms;">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/35 flex items-center justify-center text-cyan-600 dark:text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="git-merge" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">هندسة مسارات الأتمتة السحابية</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              نبني لك تدفقات سحابية ذكية تربط جميع برامجك وتطبيقاتك ببعضها لنقل ومعالجة البيانات لحظياً وبدقة فائقة.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> استضافة سحابية خاصة ومؤمنة.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> معالجة فورية وتصحيح ذاتي للأخطاء.</li>
+            </ul>
+          </div>
+
+          <div class="reveal precision-card p-8 rounded-3xl group" style="transition-delay: 200ms;">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="shopping-bag" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">أتمتة المتاجر والمخزون</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              نربط متجرك بسلة أو زد أو Shopify مع برامج المحاسبة والشحن، وتصدر الفواتير الضريبية وتتحدث الكميات آلياً.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> مطابقة الحسابات والضرائب لحظياً.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> استرجاع السلات المتروكة تلقائياً.</li>
+            </ul>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-8 rounded-3xl group" style="transition-delay: 300ms;">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="message-circle" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">روبوتات وتدفقات WhatsApp الرسمية</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              ربط رسمي مع WhatsApp Cloud API لإرسال تحديثات الطلبات وتتبع الشحنات وتنبيه الإدارة بالحالات العاجلة فوراً.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> شارات التحقق الرسمية والأمان.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> قوالب رسائل معتمدة وسريعة.</li>
+            </ul>
+          </div>
+
+          <div class="reveal precision-card p-8 rounded-3xl group" style="transition-delay: 400ms;">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/35 flex items-center justify-center text-cyan-600 dark:text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="radar" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">رادارات صيد الصفقات والفرص</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              سحب آلي لإعلانات العقارات والمناقصات أول ما تنزل، مع تحليل السعر واحتساب العائد وإرسال إشعار فوري للمستثمر.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> فلترة ذكية حسب شروطك الاستثمارية.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> تنبيه فوري خلال 30 ثانية من النشر.</li>
+            </ul>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-8 rounded-3xl group" style="transition-delay: 500ms;">
+            <div class="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/35 flex items-center justify-center text-amber-600 dark:text-amber-400 mb-6 group-hover:scale-110 transition-transform">
+              <i data-lucide="layout-dashboard" class="w-7 h-7"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3">لوحات التحكم الحية والمزامنة</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
+              تجميع كل بيانات مبيعاتك، تقييمات الفروع، ومصاريفك في لوحة تحكم واحدة على جوالك تتحدث لحظة بلحظة.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-4">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> تقارير يومية وأسبوعية على هاتفك.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> مؤشرات أداء دقيقة لاتخاذ القرار.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="reveal mt-12 text-center">
+          <a
+            href="https://wa.me/message/WWNJZ6JUPB5GP1"
+            target="_blank"
+            rel="noreferrer"
+            class="inline-flex items-center gap-3 px-8 py-4 rounded-xl btn-start-project text-base transition-all font-heading shadow-xl group hover:scale-105"
+          >
+            <span>ابدأ مشروعك</span>
+            <i data-lucide="arrow-left" class="w-5 h-5 text-obsidian-950 group-hover:-translate-x-1 transition-transform animate-pulse"></i>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 4. OUR SPECIALIZED SMART SERVICES -->
+    <!-- ============================================================== -->
+    <section id="services" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal text-center max-w-3xl mx-auto mb-12">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white font-heading mb-4">
+            خدماتنا المتخصصة.. حلول مؤتمتة لنمو أعمالك
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg">
+            أنظمة أتمتة وذكاء اصطناعي مجهزة بأعلى كفاءة لتسهيل عملياتك وتوفير وقت فريقك ومضاعفة إنتاجيتك.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-2 mt-8">
+            <button onclick="filterAgents('all')" class="agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/45 transition-all shadow-lg shadow-emerald-500/15" data-cat="all">
+              جميع الخدمات (4)
+            </button>
+            <button onclick="filterAgents('cx')" class="agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-obsidian-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-800 hover:text-emerald-500 transition-all" data-cat="cx">
+              خدمة العملاء والتقييمات
+            </button>
+            <button onclick="filterAgents('deals')" class="agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-obsidian-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-800 hover:text-emerald-500 transition-all" data-cat="deals">
+              رصد الفرص والصفقات
+            </button>
+            <button onclick="filterAgents('content')" class="agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-obsidian-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-800 hover:text-emerald-500 transition-all" data-cat="content">
+              التسويق ومنصة X
+            </button>
+            <button onclick="filterAgents('ops')" class="agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-obsidian-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-800 hover:text-emerald-500 transition-all" data-cat="ops">
+              المتاجر والعمليات
+            </button>
+          </div>
+        </div>
+
+        <div id="agentsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Agent 1: نظام رصد السمعة وتجربة العملاء الفورية -->
+          <div class="agent-card reveal precision-card p-8 rounded-3xl relative overflow-hidden group" data-agent-cat="cx">
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-obsidian-950 transition-all">
+                <i data-lucide="message-square-warning" class="w-7 h-7"></i>
+              </div>
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/35 font-bold">
+                Reputation & CX Automation
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading mb-2">نظام رصد السمعة وتجربة العملاء الفورية</h3>
+            <p class="text-slate-600 dark:text-slate-200 text-sm leading-relaxed mb-6">
+              يراقب تقييمات Google Maps و TripAdvisor لحظة بلحظة، يفهم مشاعر العميل بالذكاء الاصطناعي، يصيغ ردود ذكية ومحترمة، ويرسل تنبيه طوارئ فوري لقروب الإدارة في واتساب أول ما يجي تقييم سلبي عشان تلحق عليه قبل ما يروح لغيرك.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-200 border-t border-slate-200 dark:border-slate-800/80 pt-4 mb-6">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> رصد تلقائي وتنبيه فوري لتقييمات 1-2 نجمة.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> صياغة ردود فورية مخصصة بأسلوب علامتك التجارية.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> تقارير أسبوعية بأسباب تكرار الشكاوى في كل فرع.</li>
+            </ul>
+
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl btn-start-project text-xs font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md">
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ مشروعك واطلب هذه الخدمة ➔</span>
+            </a>
+          </div>
+
+          <!-- Agent 2 -->
+          <div class="agent-card reveal precision-card precision-card-cyan p-8 rounded-3xl relative overflow-hidden group" data-agent-cat="deals">
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 border border-cyan-500/35 flex items-center justify-center text-cyan-600 dark:text-cyan-400 group-hover:bg-cyan-500 group-hover:text-obsidian-950 transition-all">
+                <i data-lucide="radar" class="w-7 h-7"></i>
+              </div>
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/35 font-bold">
+                Deal Arbitrage Pipeline
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading mb-2">أخصائي رصد الصفقات والفرص اللقطة</h3>
+            <p class="text-slate-600 dark:text-slate-200 text-sm leading-relaxed mb-6">
+              رادار رقمي يسحب إعلانات العقارات والمناقصات أول ما تنزل، يقارن سعر المتر والبيانات السابقة بالسوق، ويرسل لك بطاقة الفرصة فوراً عند وجود خصم 15%+ عن سعر السوق عبر مسارات الأتمتة السحابية الفورية.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-200 border-t border-slate-200 dark:border-slate-800/80 pt-4 mb-6">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> رصد لحظي خلال 30 ثانية من نشر الإعلان.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> احتساب العائد التأجيري وصافي الأرباح المتوقعة آلياً.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-500"></i> إرسال تنبيه مباشر لقنوات المستثمرين الخاصة.</li>
+            </ul>
+
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl btn-start-project text-xs font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md">
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ مشروعك واطلب هذه الخدمة ➔</span>
+            </a>
+          </div>
+
+          <!-- Agent 3 -->
+          <div class="agent-card reveal precision-card p-8 rounded-3xl relative overflow-hidden group" data-agent-cat="content">
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/35 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:bg-emerald-500 group-hover:text-obsidian-950 transition-all">
+                <i data-lucide="share-2" class="w-7 h-7"></i>
+              </div>
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/35 font-bold">
+                Social Growth & X Automation
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading mb-2">مدير المحتوى والتفاعل لمنصة X</h3>
+            <p class="text-slate-600 dark:text-slate-200 text-sm leading-relaxed mb-6">
+              يراقب الكلمات المفتاحية لمجالك في منصة X، يحلل التغريدات الأكثر تفاعلاً، يصيغ ثريدات قيّمة بنفس أسلوبك، ويجدول النشر والرد على المتابعين بشكل مؤتمت يرفع وصول حسابك.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-200 border-t border-slate-200 dark:border-slate-800/80 pt-4 mb-6">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> تحليل الترندات وصياغة ثريدات متوافقة مع الخوارزميات.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> تفاعل ذكي مع الردود يعزز انتشار الحساب.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> توفير أكثر من 25 ساعة لصانع المحتوى أسبوعياً.</li>
+            </ul>
+
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl btn-start-project text-xs font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md">
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ مشروعك واطلب هذه الخدمة ➔</span>
+            </a>
+          </div>
+
+          <!-- Agent 4 -->
+          <div class="agent-card reveal precision-card p-8 rounded-3xl relative overflow-hidden group" data-agent-cat="ops">
+            <div class="flex items-center justify-between mb-6">
+              <div class="w-14 h-14 rounded-2xl bg-amber-500/15 border border-amber-500/35 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:bg-amber-500 group-hover:text-obsidian-950 transition-all">
+                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
+              </div>
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-amber-500/35 font-bold">
+                E-Commerce Sync Engine
+              </span>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading mb-2">المحاسب ومزامن المتاجر الإلكترونية</h3>
+            <p class="text-slate-600 dark:text-slate-200 text-sm leading-relaxed mb-6">
+              يربط متجرك (سلة، زد، Shopify) مباشرة مع جداول الأنظمة المحاسبية وقواعد البيانات السحابية، يطابق المبيعات والضرائب وتكاليف الشحن، ويحدث المخزون ويرسل لك ملخص الأرباح بنهاية اليوم.
+            </p>
+            <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-200 border-t border-slate-200 dark:border-slate-800/80 pt-4 mb-6">
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> مزامنة لحظية للطلبات، الضرائب، ورسوم بوابات الدفع.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> تنبيه فوري عند وصول المنتجات لحد إعادة الطلب.</li>
+              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-amber-500"></i> رسائل استرجاع ذكية للسلات المتروكة عبر WhatsApp.</li>
+            </ul>
+
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="w-full py-3 rounded-xl btn-start-project text-xs font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md">
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ مشروعك واطلب هذه الخدمة ➔</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- PACKAGES & CUSTOM SYSTEM BUILDER (باقاتنا والمنظومات المخصصة) -->
+    <!-- ============================================================== -->
+    <section id="packages" class="py-24 relative bg-slate-100/60 dark:bg-obsidian-900/50 border-t border-slate-200 dark:border-slate-800/80">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="reveal text-center max-w-4xl mx-auto mb-14">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/35 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold uppercase mb-4 shadow-sm">
+            <i data-lucide="layers" class="w-4 h-4 text-emerald-500"></i>
+            <span>MODELS & SYSTEM ARCHITECTURE</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white font-heading leading-normal sm:leading-relaxed lg:leading-[1.4] mb-4 tracking-normal">
+            استثمار مدروس بعائد تشغيلي مضاعف..<br class="hidden sm:block" />
+            <span class="inline-block mt-1 text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-emerald-400 to-cyan-400 pb-1">
+              اختر باقتك أو صمّم منظومتك المخصصة
+            </span>
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
+            أنظمة أتمتة وذكاء اصطناعي تضمن تقليل مصاريفك التشغيلية بنسبة تفوق 80% مع استرداد كامل للاستثمار التشغيلي (ROI) من الشهر الأول.
+          </p>
+
+          <!-- Interactive View Switcher (الباقات الجاهزة / صمّم منظومتك) -->
+          <div class="inline-flex items-center p-1.5 rounded-2xl bg-white dark:bg-obsidian-950 border border-slate-300 dark:border-slate-800 mt-8 shadow-lg shadow-emerald-500/5">
+            <button
+              id="tabTurnkeyBtn"
+              onclick="switchPackageTab('turnkey')"
+              class="px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all bg-gradient-to-r from-emerald-500 to-cyan-500 text-obsidian-950 shadow-md"
+            >
+              <i data-lucide="zap" class="w-4 h-4"></i>
+              <span>باقاتنا المؤسسية الجاهزة</span>
+            </button>
+            <button
+              id="tabCustomBtn"
+              onclick="switchPackageTab('custom')"
+              class="px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all text-slate-700 dark:text-slate-300 hover:text-emerald-500"
+            >
+              <i data-lucide="sliders" class="w-4 h-4"></i>
+              <span>🛠️ صمّم منظومتك الذكية</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. TURNKEY PACKAGES CONTAINER -->
+        <div id="turnkeyPackagesContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+          
+          <!-- Package 1: الانطلاق الذكي -->
+          <div class="reveal precision-card p-8 rounded-3xl flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 rounded-lg bg-slate-200/80 dark:bg-obsidian-800 text-slate-700 dark:text-slate-300 text-xs font-bold font-mono">
+                  STARTER ENGINE
+                </span>
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                  <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
+              </div>
+
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white font-heading mb-2">باقة الانطلاق والتشغيل الذكي</h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                مثالية للمتاجر الناشئة ورواد الأعمال الراغبين في أتمتة الردود وخدمة العملاء وربط واتساب بلا أخطاء.
+              </p>
+
+              <div class="py-4 border-y border-slate-200 dark:border-slate-800/80 mb-6">
+                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">الوقت المتوقع للتسليم:</div>
+                <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-heading mt-0.5">جاهز للعمل خلال 4 - 6 أيام عمل ⚡</div>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>بناء وتدريب <strong>موظف ذكاء اصطناعي واحد</strong> لخدمة العملاء والردود.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>ربط رسمي مباشر مع <strong>WhatsApp Cloud API</strong>.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>تقارير أداء يومية مختصرة وملخص العمليات على جوالك.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>استضافة سحابية خاصة ومؤمنة وتدريب لفريقك على الاستخدام.</span>
+                </li>
+              </ul>
+            </div>
+
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D9%88%D8%A8%D8%AF%D8%A1%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D8%A7%D9%86%D8%B7%D9%84%D8%A7%D9%82%20%D8%A7%D9%84%D8%B0%D9%83%D9%8A."
+              target="_blank"
+              rel="noreferrer"
+              class="w-full py-3.5 rounded-xl bg-slate-200 dark:bg-obsidian-800 hover:bg-emerald-500 hover:text-obsidian-950 text-slate-900 dark:text-white text-xs sm:text-sm font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md"
+            >
+              <span>ابدأ باقة الانطلاق ➔</span>
+            </a>
+          </div>
+
+          <!-- Package 2: باقة النمو والتكامل الشامل (FEATURED) -->
+          <div class="reveal precision-card p-8 rounded-3xl flex flex-col justify-between border-2 border-emerald-500 shadow-2xl relative group transform lg:-translate-y-2">
+            <!-- Popular Badge -->
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-obsidian-950 text-[11px] font-black font-heading uppercase tracking-wider shadow-lg flex items-center gap-1.5 whitespace-nowrap">
+              <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+              <span>الأكثر اختياراً لقطاع الأعمال ⭐</span>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-4 mt-2">
+                <span class="px-3 py-1 rounded-lg bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-bold font-mono border border-emerald-500/30">
+                  GROWTH & SCALE AI
+                </span>
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/25 border border-emerald-500/50 flex items-center justify-center text-emerald-600 dark:text-emerald-300">
+                  <i data-lucide="rocket" class="w-5 h-5"></i>
+                </div>
+              </div>
+
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white font-heading mb-2">باقة النمو والتكامل الشامل</h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                المنظومة الكاملة للمنشآت المتنامية والمتاجر النشطة الراغبة في مزامنة المبيعات والمخزون وحماية السمعة.
+              </p>
+
+              <div class="py-4 border-y border-slate-200 dark:border-slate-800/80 mb-6 bg-emerald-500/5 rounded-xl px-3">
+                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">الوقت المتوقع للتسليم:</div>
+                <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-heading mt-0.5">جاهز للعمل خلال 7 - 10 أيام عمل 🚀</div>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>بناء <strong>موظفين رقميين متعددي المهام</strong> (خدمة عملاء + مبيعات + جودة).</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>ربط متكامل مع متجرك (سلة/زد/Shopify) والبرامج المحاسبية.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>نظام <strong>رصد تقييمات Google Maps الفوري</strong> ومعالجة الشكاوى السلبية.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>استرجاع ذكي للسلات المتروكة وتنبيهات طوارئ فورية للإدارة.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                  <span>دعم فني ذو أولوية وضمان تشغيلي عالي الكفاءة.</span>
+                </li>
+              </ul>
+            </div>
+
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A8%D8%AF%D8%A1%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9%20%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D9%86%D9%85%D9%88%20%D9%88%D8%A7%D9%84%D8%AA%D9%83%D8%A7%D9%85%D9%84%20%D8%A7%D9%84%D8%B4%D8%A7%D9%85%D9%84."
+              target="_blank"
+              rel="noreferrer"
+              class="w-full py-4 rounded-xl btn-start-project text-xs sm:text-sm font-black font-heading flex items-center justify-center gap-2 transition-all shadow-xl"
+            >
+              <i data-lucide="sparkles" class="w-4 h-4 text-obsidian-950"></i>
+              <span>ابدأ باقة النمو الشامل ➔</span>
+            </a>
+          </div>
+
+          <!-- Package 3: باقة المنظومة المؤسسية الكبرى -->
+          <div class="reveal precision-card precision-card-cyan p-8 rounded-3xl flex flex-col justify-between group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="px-3 py-1 rounded-lg bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 text-xs font-bold font-mono border border-cyan-500/30">
+                  ENTERPRISE ARCHITECTURE
+                </span>
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                  <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+              </div>
+
+              <h3 class="text-2xl font-black text-slate-900 dark:text-white font-heading mb-2">باقة المنظومة المؤسسية الكبرى</h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                حلول مصممة خصيصاً للشركات الكبرى، سلاسل الفروع، والمكاتب الاستثمارية ذات العمليات المتشعبة.
+              </p>
+
+              <div class="py-4 border-y border-slate-200 dark:border-slate-800/80 mb-6">
+                <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">الوقت المتوقع للتسليم:</div>
+                <div class="text-sm font-bold text-cyan-600 dark:text-cyan-400 font-heading mt-0.5">خطة تنفيذ مخصصة مع مدير حساب مخصص 👑</div>
+              </div>
+
+              <ul class="space-y-3 text-xs sm:text-sm text-slate-700 dark:text-slate-200 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5"></i>
+                  <span>هندسة بنية تحتية سحابية متكاملة وتدفقات أتمتة لا محدودة.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5"></i>
+                  <span>بناء <strong>رادارات صيد الصفقات والمناقصات</strong> الحصرية وتحليل العوائد.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5"></i>
+                  <span>ربط قواعد بيانات مركزية ولوحات تحكم تنفيذية مخصصة لإدارتك.</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5"></i>
+                  <span>اتفاقية سرية بيانات صارمة (NDA) وضمان استمرارية الخدمة (SLA).</span>
+                </li>
+              </ul>
+            </div>
+
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%B7%D9%84%D8%A8%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D9%88%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A8%D8%A7%D9%82%D8%A9%20%D8%A7%D9%84%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D9%85%D8%A4%D8%B3%D8%B3%D9%8A%D8%A9%20%D8%A7%D9%84%D9%83%D8%A8%D8%B1%D9%89%20(Enterprise)."
+              target="_blank"
+              rel="noreferrer"
+              class="w-full py-3.5 rounded-xl bg-slate-200 dark:bg-obsidian-800 hover:bg-cyan-500 hover:text-obsidian-950 text-slate-900 dark:text-white text-xs sm:text-sm font-bold font-heading flex items-center justify-center gap-2 transition-all shadow-md"
+            >
+              <span>طلب استشارة المنظومة الكبرى ➔</span>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- 2. CUSTOM SYSTEM BUILDER CONTAINER (حاسبة صمّم منظومتك التفاعلية) -->
+        <div id="customBuilderContainer" class="hidden max-w-5xl mx-auto">
+          <div class="reveal p-6 sm:p-10 rounded-3xl bg-white dark:bg-obsidian-950 border-2 border-emerald-500/40 shadow-2xl backdrop-blur-xl">
+            
+            <div class="text-center max-w-2xl mx-auto mb-10">
+              <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 font-mono text-xs font-bold uppercase">
+                INTERACTIVE SYSTEM ARCHITECT
+              </span>
+              <h3 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-heading mt-3 mb-2">
+                صمّم منظومتك الذكية بدقة 🛠️
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                حدد الموظفين الرقميين وقنوات الربط المناسبة لعملياتك، وشاهد النتائج والعائد التقديري لحظياً.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              <!-- Left Side: Interactive Selectors (7 cols) -->
+              <div class="lg:col-span-7 space-y-6">
+                
+                <!-- Step 1: Select AI Agents -->
+                <div>
+                  <h4 class="text-sm font-black text-slate-900 dark:text-white font-heading mb-3 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-mono font-bold">1</span>
+                    <span>الموظفون الرقميون المطلوبون:</span>
+                  </h4>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    
+                    <label class="custom-builder-item flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500/50 transition-all">
+                      <input type="checkbox" class="builder-agent-checkbox w-4 h-4 text-emerald-500 rounded border-slate-300 dark:border-slate-700 focus:ring-emerald-500" data-hours="35" data-title="خدمة العملاء وواتساب" checked onchange="calculateCustomSystem()" />
+                      <div class="text-right">
+                        <div class="text-xs font-bold text-slate-900 dark:text-white font-heading">موظف خدمة العملاء 24/7</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400">رد فوري وإغلاق صفقات</div>
+                      </div>
+                    </label>
+
+                    <label class="custom-builder-item flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500/50 transition-all">
+                      <input type="checkbox" class="builder-agent-checkbox w-4 h-4 text-emerald-500 rounded border-slate-300 dark:border-slate-700 focus:ring-emerald-500" data-hours="25" data-title="رصد التقييمات والسمعة" checked onchange="calculateCustomSystem()" />
+                      <div class="text-right">
+                        <div class="text-xs font-bold text-slate-900 dark:text-white font-heading">موظف رصد التقييمات والسمعة</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400">Google Maps وتنبيه الإدارة</div>
+                      </div>
+                    </label>
+
+                    <label class="custom-builder-item flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500/50 transition-all">
+                      <input type="checkbox" class="builder-agent-checkbox w-4 h-4 text-emerald-500 rounded border-slate-300 dark:border-slate-700 focus:ring-emerald-500" data-hours="40" data-title="مزامنة المخزون والمحاسبة" checked onchange="calculateCustomSystem()" />
+                      <div class="text-right">
+                        <div class="text-xs font-bold text-slate-900 dark:text-white font-heading">مزامن المتاجر والمحاسبة</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400">سلة/زد/دفاترة والضرائب</div>
+                      </div>
+                    </label>
+
+                    <label class="custom-builder-item flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500/50 transition-all">
+                      <input type="checkbox" class="builder-agent-checkbox w-4 h-4 text-emerald-500 rounded border-slate-300 dark:border-slate-700 focus:ring-emerald-500" data-hours="30" data-title="رادار صيد الصفقات" onchange="calculateCustomSystem()" />
+                      <div class="text-right">
+                        <div class="text-xs font-bold text-slate-900 dark:text-white font-heading">رادار صيد الصفقات العقارية</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400">سحب الإعلانات وتحليل العائد</div>
+                      </div>
+                    </label>
+
+                    <label class="custom-builder-item flex items-center gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 cursor-pointer hover:border-emerald-500/50 transition-all">
+                      <input type="checkbox" class="builder-agent-checkbox w-4 h-4 text-emerald-500 rounded border-slate-300 dark:border-slate-700 focus:ring-emerald-500" data-hours="20" data-title="مدير تفاعل ومحتوى منصة X" onchange="calculateCustomSystem()" />
+                      <div class="text-right">
+                        <div class="text-xs font-bold text-slate-900 dark:text-white font-heading">مدير محتوى منصة X</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400">رصد الترندات وصياغة الثريدات</div>
+                      </div>
+                    </label>
+
+                  </div>
+                </div>
+
+                <!-- Step 2: Integrations -->
+                <div>
+                  <h4 class="text-sm font-black text-slate-900 dark:text-white font-heading mb-3 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 flex items-center justify-center text-xs font-mono font-bold">2</span>
+                    <span>قنوات التكامل والربط المطلوبة:</span>
+                  </h4>
+                  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer hover:border-cyan-500/50 transition-all">
+                      <input type="checkbox" class="builder-integration-checkbox w-3.5 h-3.5 text-cyan-500 rounded" data-title="واتساب الرسمي" checked onchange="calculateCustomSystem()" />
+                      <span class="text-slate-800 dark:text-slate-200">WhatsApp Cloud</span>
+                    </label>
+
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer hover:border-cyan-500/50 transition-all">
+                      <input type="checkbox" class="builder-integration-checkbox w-3.5 h-3.5 text-cyan-500 rounded" data-title="متجر سلة / زد" checked onchange="calculateCustomSystem()" />
+                      <span class="text-slate-800 dark:text-slate-200">سلة / زد / Shopify</span>
+                    </label>
+
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer hover:border-cyan-500/50 transition-all">
+                      <input type="checkbox" class="builder-integration-checkbox w-3.5 h-3.5 text-cyan-500 rounded" data-title="الأنظمة المحاسبية" checked onchange="calculateCustomSystem()" />
+                      <span class="text-slate-800 dark:text-slate-200">برامج المحاسبة</span>
+                    </label>
+
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer hover:border-cyan-500/50 transition-all">
+                      <input type="checkbox" class="builder-integration-checkbox w-3.5 h-3.5 text-cyan-500 rounded" data-title="Google Maps" checked onchange="calculateCustomSystem()" />
+                      <span class="text-slate-800 dark:text-slate-200">Google Maps API</span>
+                    </label>
+
+                    <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800 text-xs font-bold cursor-pointer hover:border-cyan-500/50 transition-all">
+                      <input type="checkbox" class="builder-integration-checkbox w-3.5 h-3.5 text-cyan-500 rounded" data-title="قواعد البيانات السحابية" onchange="calculateCustomSystem()" />
+                      <span class="text-slate-800 dark:text-slate-200">قواعد البيانات / Sheets</span>
+                    </label>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Right Side: Live ROI & Time Savings Summary (5 cols) -->
+              <div class="lg:col-span-5 p-6 rounded-3xl bg-gradient-to-br from-emerald-500/15 via-slate-100 dark:via-obsidian-900 to-cyan-500/15 border border-emerald-500/40 shadow-xl">
+                <div class="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 uppercase mb-2">
+                  ESTIMATED SYSTEM IMPACT
+                </div>
+                <h4 class="text-lg font-black text-slate-900 dark:text-white font-heading mb-4">
+                  ملخص كفاءة منظومتك المخصصة
+                </h4>
+
+                <div class="space-y-4 mb-6">
+                  
+                  <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-obsidian-950/80 border border-emerald-500/30">
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400">إجمالي الوقت الموفر لفريقك:</div>
+                    <div id="builderTimeSaved" class="text-2xl font-black text-emerald-600 dark:text-emerald-400 font-heading mt-0.5">
+                      100+ ساعة / شهرياً
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-obsidian-950/80 border border-cyan-500/30">
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400">العائد والكفاءة المتوقعة:</div>
+                    <div id="builderStaffSaved" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-heading mt-0.5">
+                      توفير يعادل جهد 2-3 موظفين بدوام كامل
+                    </div>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-white/80 dark:bg-obsidian-950/80 border border-slate-200 dark:border-slate-800">
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400">المدة التقديرية للجاهزية والتشغيل:</div>
+                    <div id="builderDays" class="text-sm font-bold text-slate-900 dark:text-white font-heading mt-0.5">
+                      5 إلى 8 أيام عمل
+                    </div>
+                  </div>
+
+                </div>
+
+                <a
+                  id="builderWhatsappBtn"
+                  href="#"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="w-full py-4 rounded-xl btn-start-project text-xs sm:text-sm font-black font-heading flex items-center justify-center gap-2 transition-all shadow-xl text-center"
+                >
+                  <i data-lucide="rocket" class="w-4 h-4 text-obsidian-950"></i>
+                  <span>اعتماد وبدء تنفيذ منظومتك الحين ➔</span>
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 5. "عندك فكرة وتبي تنفذها؟" -->
+    <!-- ============================================================== -->
+    <section class="py-16 relative">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="reveal p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-emerald-500/20 via-slate-100 dark:via-obsidian-900 to-cyan-500/20 border-2 border-emerald-500/50 shadow-2xl backdrop-blur-xl relative overflow-hidden text-center">
+          
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 font-mono text-xs font-bold uppercase mb-4">
+            <i data-lucide="lightbulb" class="w-4 h-4 text-emerald-500"></i>
+            <span>CUSTOM AUTOMATION LAB</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white font-heading mb-4 leading-tight">
+            عندك فكرة وتبي تنفّذها؟ 💡
+          </h2>
+
+          <p class="text-slate-700 dark:text-slate-200 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+            مهما كانت فكرتك معقدة أو تتطلب ربطاً بين برامج وتطبيقات متعددة.. نبتكر ونؤسس لك منظومة أتمتة خاصة تشتغل ذاتياً بدقة وسلاسة 24/7.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1"
+              target="_blank"
+              rel="noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-2xl btn-start-project text-base sm:text-lg shadow-2xl transition-all font-heading"
+            >
+              <i data-lucide="rocket" class="w-5 h-5 text-obsidian-950"></i>
+              <span>ابدأ مشروعك واعرض فكرتك الحين ➔</span>
+            </a>
+
+            <a
+              href="/plan"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-2xl bg-slate-900/90 dark:bg-obsidian-950/90 hover:bg-slate-800 text-white border border-emerald-500/50 hover:border-emerald-400 font-heading font-black text-base sm:text-lg transition-all shadow-xl hover:scale-105"
+            >
+              <i data-lucide="sparkles" class="w-5 h-5 text-emerald-400 animate-pulse"></i>
+              <span>ابنِ خطة فكرتك مع AI (مجاناً) 🪄</span>
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 6. REAL CUSTOMER TESTIMONIALS (7 REVIEWS) -->
+    <!-- ============================================================== -->
+    <section id="testimonials" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal text-center max-w-3xl mx-auto mb-16">
+          <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase font-mono">
+            TESTIMONIALS & IMPACT
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white font-heading mt-4 mb-4">
+            تجارب ونتائج شركائنا في قطاعات الأعمال
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg">
+            آراء موثقة من أصحاب الأعمال والمدراء بعد تشغيل منظومة Automata IQ.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <div class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "كنا نعاني من تأخر الرد على تقييمات الفروع في خرائط جوجل. بعد تشغيل موظف السمعة الرقمي، أصبحنا نعالج الشكاوى السلبية في أقل من 3 دقائق ونستلم تنبيهاً فورياً على واتساب."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">سلطان الشمري</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">الرئيس التنفيذي لقطاع المطاعم والمقاهي</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold font-mono">
+                وفر 14,000 ر.س
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-6 rounded-3xl flex flex-col justify-between" style="transition-delay: 50ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "رادار الصفقات العقارية كان استثماراً استثنائياً. يسحب الإعلانات والمناقصات فور نزولها ويقارن سعر المتر، واقتنصنا 3 صفقات بأقل من سعر السوق بـ 18% قبل المنافسين."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">تركي القحطاني</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">مدير إدارة الاستثمار وتطوير الأعمال</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 text-[10px] font-bold font-mono">
+                صفقات فورية
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between" style="transition-delay: 100ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "ربط متجرنا الإلكتروني مع برامج المحاسبة وجداول المتابعة ألغى تماماً أخطاء الإدخال اليدوي. نوفر يومياً ساعتين ونصف من جهد المحاسبين مع مطابقة دقيقة للضرائب."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">فيصل الدوسري</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">مؤسس ومدير منصة تجارة إلكترونية</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold font-mono">
+                دقة 99.9%
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-6 rounded-3xl flex flex-col justify-between" style="transition-delay: 150ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "الالتزام الصارم بسرية البيانات وتشفير مسارات الـ Webhooks منحنا ثقة تامة. المنظومة تعمل في مجمعاتنا الطبية بسلاسة فائقة وتوافق كامل مع أنظمتنا الداخلية."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">د. ريم المهيدب</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">الرئيس التنفيذي لمجموعة مراكز طبية</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 text-[10px] font-bold font-mono">
+                أمان Enterprise
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between" style="transition-delay: 200ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "أتمتة خدمة عملاء الواتساب واسترجاع السلات المتروكة رفعت مبيعاتنا الشهرية بنسبة 23% دون الحاجة لزيادة فريق الدعم في الفترات المسائية وعطلات نهاية الأسبوع."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">خالد العتيبي</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">مدير التسويق الرقمي والمبيعات</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold font-mono">
+                +23% مبيعات
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card precision-card-cyan p-6 rounded-3xl flex flex-col justify-between" style="transition-delay: 250ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "سرعة التنفيذ والاحترافية العالية في فهم تدفقات العمل الخاصة بشركتنا كانت مذهلة. تم إطلاق المنظومة وربطها خلال أقل من 72 ساعة وبكفاءة تشغيل مبهرة."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">أ. نورة السبيعي</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">شريك إداري بشركة استشارات أعمال</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-600 dark:text-cyan-300 text-[10px] font-bold font-mono">
+                تنفيذ في 72 ساعة
+              </span>
+            </div>
+          </div>
+
+          <div class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between md:col-span-2 lg:col-span-1" style="transition-delay: 300ms;">
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 mb-3">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+              </div>
+              <p class="text-slate-700 dark:text-slate-200 text-sm leading-relaxed mb-6 font-medium">
+                "موظف محتوى X الآلي وفّر على فريق التسويق أكثر من 30 ساعة أسبوعياً في البحث وصياغة المحتوى المتخصص مع تفاعل مستمر يرفع من قوة علامتنا التجارية."
+              </p>
+            </div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">عمر باحمدان</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">مؤسس وكالة إعلام رقمي</p>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 text-[10px] font-bold font-mono">
+                وفر 30 ساعة/أسبوع
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 8. BLOG / INSIGHTS (المدونة والمعرفة) -->
+    <!-- ============================================================== -->
+    <section id="blog" class="py-24 bg-slate-50 dark:bg-obsidian-900/50 border-y border-slate-200 dark:border-slate-800/80 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal text-center max-w-3xl mx-auto mb-16">
+          <span class="px-3.5 py-1.5 rounded-full bg-cyan-500/15 border border-cyan-500/40 text-cyan-600 dark:text-cyan-400 text-xs font-bold uppercase font-mono">
+            INSIGHTS & ARTICLES
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 dark:text-white font-heading mt-4 mb-4">
+            المدونة ومستجدات الأتمتة الذكية
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg">
+            مقالات وأدلة عملية تساعدك تفهم كيف توظف الموظفين الرقميين وتضاعف إنتاجية شغلك.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <article class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between group">
+            <div>
+              <div class="h-44 rounded-2xl bg-gradient-to-br from-emerald-500/20 via-cyan-500/15 to-obsidian-900 flex items-center justify-center mb-6 overflow-hidden border border-emerald-500/20">
+                <i data-lucide="cpu" class="w-16 h-16 text-emerald-500 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-emerald-600 dark:text-emerald-400 font-mono mb-3">
+                <span class="px-2 py-0.5 rounded bg-emerald-500/15 font-bold">دليل الأتمتة</span>
+                <span>• قراءة 4 دقائق</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3 group-hover:text-emerald-500 transition-colors">
+                كيف تختار منظومة الأتمتة السحابية المناسبة لطبيعة عمليات شركتك؟
+              </h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                مقارنة شاملة بين المنصات الرائدة عالمياً من حيث سيادة البيانات، التكلفة، ودعم التطبيقات التجارية المختلفة.
+              </p>
+            </div>
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 flex items-center gap-1.5 font-heading">
+              <span>استفسر عن تطبيق هذا المسار</span>
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+          </article>
+
+          <article class="reveal precision-card precision-card-cyan p-6 rounded-3xl flex flex-col justify-between group" style="transition-delay: 100ms;">
+            <div>
+              <div class="h-44 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-emerald-500/15 to-obsidian-900 flex items-center justify-center mb-6 overflow-hidden border border-cyan-500/20">
+                <i data-lucide="users" class="w-16 h-16 text-cyan-500 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-cyan-600 dark:text-cyan-400 font-mono mb-3">
+                <span class="px-2 py-0.5 rounded bg-cyan-500/15 font-bold">الأتمتة والذكاء الاصطناعي</span>
+                <span>• قراءة 5 دقائق</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3 group-hover:text-cyan-500 transition-colors">
+                حلول الأتمتة الذكية مقابل العمل التقليدي: حسابات التكلفة والإنتاجية
+              </h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                دراسة رقمية توضح كيف يمكن تقليص تكاليف خدمة العملاء وإدخال البيانات بنسبة <strong class="text-amber-600 dark:text-amber-400 font-bold">80%</strong> دون المساس بالجودة.
+              </p>
+            </div>
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="text-xs font-bold text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 flex items-center gap-1.5 font-heading">
+              <span>استفسر عن تطبيق هذا المسار</span>
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+          </article>
+
+          <article class="reveal precision-card p-6 rounded-3xl flex flex-col justify-between group" style="transition-delay: 200ms;">
+            <div>
+              <div class="h-44 rounded-2xl bg-gradient-to-br from-amber-500/20 via-emerald-500/15 to-obsidian-900 flex items-center justify-center mb-6 overflow-hidden border border-amber-500/20">
+                <i data-lucide="lock" class="w-16 h-16 text-amber-500 group-hover:scale-110 transition-transform duration-300"></i>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-amber-600 dark:text-amber-400 font-mono mb-3">
+                <span class="px-2 py-0.5 rounded bg-amber-500/15 font-bold">أمن البيانات</span>
+                <span>• قراءة 3 دقائق</span>
+              </div>
+              <h3 class="text-xl font-bold text-slate-900 dark:text-white font-heading mb-3 group-hover:text-amber-500 transition-colors">
+                معايير الأمان وتشفير البيانات السحابية عند ربط أدوات الأتمتة
+              </h3>
+              <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                أهم معايير الأمان لضمان سرية بيانات عملائك وتشفير الـ Webhooks عبر بروتوكولات Enterprise الآمنة.
+              </p>
+            </div>
+            <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noreferrer" class="text-xs font-bold text-amber-600 dark:text-amber-400 hover:text-amber-500 flex items-center gap-1.5 font-heading">
+              <span>استفسر عن تطبيق هذا المسار</span>
+              <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            </a>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 8. FAQ SECTION -->
+    <!-- ============================================================== -->
+    <section id="faq" class="py-24 bg-slate-50 dark:bg-obsidian-900/40 border-y border-slate-200 dark:border-slate-800/80 relative">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal text-center max-w-2xl mx-auto mb-14">
+          <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase font-mono">
+            FREQUENTLY ASKED QUESTIONS
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-heading mt-4 mb-4">
+            الأسئلة الشائعة حول الأتمتة والموظفين الرقميين
+          </h2>
+          <p class="text-slate-600 dark:text-slate-300 text-sm sm:text-base">
+            إليك إجابات واضحة ومباشرة لأهم الأسئلة قبل لا تبدأ معنا.
+          </p>
+        </div>
+
+        <div class="reveal space-y-4">
+          
+          <div class="faq-item rounded-2xl bg-white dark:bg-obsidian-900/90 border border-slate-200 dark:border-slate-800 overflow-hidden transition-all shadow-sm">
+            <button onclick="toggleFaq(this)" class="w-full p-6 text-right flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-white font-heading text-base hover:text-emerald-500 transition-colors">
+              <span>هل يحتاج فريقي يكون عنده خبرة تقنية أو برمجة عشان يدير النظام؟</span>
+              <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-emerald-500 transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-600 dark:text-slate-200 leading-relaxed border-t border-slate-200 dark:border-slate-800/80 pt-4">
+              أبداً! في Automata IQ نتولى كل شيء من الألف إلى الياء، من التصميم والربط السحابي والتدريب. الموظف الرقمي بيتواصل معك على نفس التطبيقات اللي تستخدمها يومياً مثل واتساب، تيليجرام، أو جداول Google Sheets بدون أي تعقيد.
+            </div>
+          </div>
+
+          <div class="faq-item rounded-2xl bg-white dark:bg-obsidian-900/90 border border-slate-200 dark:border-slate-800 overflow-hidden transition-all shadow-sm">
+            <button onclick="toggleFaq(this)" class="w-full p-6 text-right flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-white font-heading text-base hover:text-emerald-500 transition-colors">
+              <span>وش هي التطبيقات والمنصات اللي نقدر نربطها بالأتمتة؟</span>
+              <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-emerald-500 transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-600 dark:text-slate-200 leading-relaxed border-t border-slate-200 dark:border-slate-800/80 pt-4">
+              ندعم الربط مع أكثر من 500+ منصة وتطبيق، مثل: منصات المتاجر (سلة، زد، Shopify)، قنوات التواصل (WhatsApp Business API, Telegram, X)، برامج المحاسبة وإدارة العملاء (CRM, Zoho, HubSpot, Odoo)، وجداول البيانات السحابية (Google Sheets, Notion, Airtable).
+            </div>
+          </div>
+
+          <div class="faq-item rounded-2xl bg-white dark:bg-obsidian-900/90 border border-slate-200 dark:border-slate-800 overflow-hidden transition-all shadow-sm">
+            <button onclick="toggleFaq(this)" class="w-full p-6 text-right flex items-center justify-between gap-4 font-bold text-slate-900 dark:text-white font-heading text-base hover:text-emerald-500 transition-colors">
+              <span>هل بيانات شركتي وعملائي محمية باتفاقيات سرية رسمية؟</span>
+              <i data-lucide="chevron-down" class="faq-icon w-5 h-5 text-emerald-500 transition-transform duration-300"></i>
+            </button>
+            <div class="faq-content hidden px-6 pb-6 text-sm text-slate-600 dark:text-slate-200 leading-relaxed border-t border-slate-200 dark:border-slate-800/80 pt-4">
+              نعم، بالتأكيد. نوقع اتفاقية عدم إفصاح وسرية بيانات رسمية (NDA) قبل بدء أي مرحلة، وتتم استضافة جميع مسارات الأتمتة على خوادم سحابية مشفرة بأعلى معايير الأمان المؤسسية Enterprise.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 11. FINAL CTA -->
+    <!-- ============================================================== -->
+    <section class="py-24 relative">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="reveal p-8 sm:p-14 rounded-3xl bg-gradient-to-b from-slate-100 via-white to-slate-100 dark:from-obsidian-900/95 dark:via-obsidian-950 dark:to-obsidian-900/95 border border-emerald-500/40 backdrop-blur-2xl shadow-2xl text-center relative overflow-hidden">
+          
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/40 text-emerald-700 dark:text-emerald-300 text-xs font-bold uppercase font-mono mb-6">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-500"></i>
+            <span>INSTANT DIRECT ACTION</span>
+          </div>
+
+          <h2 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white font-heading mb-6 max-w-2xl mx-auto leading-tight">
+            جاهز تأتمت شغلك وتوفر أكثر من <span class="text-amber-500 font-black">80%</span> من ساعات العمل؟
+          </h2>
+
+          <p class="text-slate-600 dark:text-slate-200 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+            ابدأ مشروعك الحين عبر WhatsApp وخلنا نشخّص مشاكلك ونرسم لك خطة الأتمتة المناسبة لشركتك.
+          </p>
+
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a
+              href="https://wa.me/message/WWNJZ6JUPB5GP1"
+              target="_blank"
+              rel="noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-12 py-5 rounded-2xl btn-start-project text-xl shadow-2xl transition-all font-heading hover:scale-105"
+            >
+              <i data-lucide="sparkles" class="w-6 h-6 text-obsidian-950"></i>
+              <span>ابدأ مشروعك الحين 🚀</span>
+            </a>
+          </div>
+
+          <p class="text-xs text-slate-500 dark:text-slate-300 mt-5">
+            ⚡ نرد فوراً خلال دقائق على مدار 24 ساعة • محادثة مشفرة وآمنة تماماً
+          </p>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 12. FLOATING WHATSAPP BUTTON -->
+    <!-- ============================================================== -->
+    <div class="fixed bottom-6 left-6 z-50">
+      <a
+        href="https://wa.me/message/WWNJZ6JUPB5GP1"
+        target="_blank"
+        rel="noreferrer"
+        class="group relative flex items-center justify-center w-14 h-14 rounded-full bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 shadow-2xl shadow-emerald-500/50 transition-all hover:scale-110"
+        aria-label="ابدأ مشروعك عبر واتساب"
+      >
+        <span class="absolute -top-1 -right-1 flex h-4 w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-400"></span>
+        </span>
+        <i data-lucide="sparkles" class="w-7 h-7"></i>
+
+        <span class="absolute right-16 px-4 py-2.5 rounded-xl bg-obsidian-900 border border-emerald-500/40 text-emerald-300 text-xs font-bold whitespace-nowrap shadow-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none flex items-center gap-2">
+          <span>ابدأ مشروعك الحين</span>
+          <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+        </span>
+      </a>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- 13. FOOTER -->
+    <!-- ============================================================== -->
+    <footer class="bg-slate-100 dark:bg-obsidian-950 border-t border-slate-200 dark:border-slate-900 py-16 text-slate-600 dark:text-slate-400 text-sm mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+          
+          <div class="md:col-span-2">
+            <a href="#" class="flex items-center gap-3 mb-4">
+              <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-500">
+                <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+                  <path d="M 46 154 L 94 42 C 96 37 104 37 106 42 L 154 154" stroke="#34d399" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 68 126 C 96 126 102 96 116 70 C 124 54 136 44 148 44 C 158 44 164 52 164 64 L 164 154" stroke="#00f59b" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="156" cy="44" r="9" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="3"/>
+                  <circle cx="70" cy="126" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+                  <circle cx="150" cy="146" r="8" fill="#6ee7b7" stroke="#ecfdf5" stroke-width="2.5"/>
+                </svg>
+              </div>
+              <span class="text-xl font-black text-slate-900 dark:text-white font-sans uppercase tracking-widest">
+                Automata <span class="text-emerald-500 dark:text-emerald-400">IQ</span>
+              </span>
+            </a>
+            <p class="text-slate-600 dark:text-slate-300 text-sm max-w-md leading-relaxed mb-4">
+              المنصة والوكالة الرائدة في بناء الموظفين الرقميين وهندسة مسارات الأتمتة السحابية ومضاعفة كفاءة الشركات والأنشطة التجارية في المملكة العربية السعودية والخليج.
+            </p>
+            <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
+              <span>التزام صارم باتفاقيات عدم الإفصاح (NDA) ومعايير تشفير البيانات السحابية</span>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-slate-900 dark:text-white font-bold font-heading mb-4 text-base">خدماتنا وروابطنا</h4>
+            <ul class="space-y-2.5">
+              <li><a href="#services" class="hover:text-emerald-500 transition-colors">خدماتنا في الأتمتة</a></li>
+              <li><a href="#packages" class="hover:text-emerald-500 transition-colors font-bold text-emerald-600 dark:text-emerald-400">باقاتنا والمنظومات الذكية</a></li>
+              <li><a href="#testimonials" class="hover:text-emerald-500 transition-colors">آراء العملاء</a></li>
+              <li><a href="#blog" class="hover:text-emerald-500 transition-colors">المدونة</a></li>
+              <li><a href="#faq" class="hover:text-emerald-500 transition-colors">الأسئلة الشائعة</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-slate-900 dark:text-white font-bold font-heading mb-4 text-base">ابدأ الآن</h4>
+            <ul class="space-y-2.5">
+              <li><a href="/plan" class="hover:text-emerald-500 transition-colors">تخطيط المشروع مع AI</a></li>
+              <li>
+                <a
+                  href="https://wa.me/message/WWNJZ6JUPB5GP1"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="text-emerald-600 dark:text-emerald-400 hover:underline font-bold"
+                >
+                  ابدأ مشروعك عبر WhatsApp ➔
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="pt-8 border-t border-slate-200 dark:border-slate-900 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
+          <p>© 2026 Automata IQ. جميع الحقوق محفوظة.</p>
+          <div class="flex flex-wrap items-center gap-5">
+            <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-medium">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-500"></i>
+              المملكة العربية السعودية
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-medium">
+              <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-500"></i>
+              اتفاقيات سرية البيانات (NDA)
+            </span>
+            <span class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-medium">
+              <i data-lucide="server" class="w-3.5 h-3.5 text-cyan-500"></i>
+              بنية تحتية سحابية موثوقة 100%
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- SMART CONTEXTUAL FLOATING WHATSAPP WIDGET -->
+  <!-- ============================================================== -->
+  <div id="smartFloatingWhatsApp" class="fixed bottom-6 left-6 z-50 flex flex-col items-start font-sans" dir="rtl">
+    
+    <!-- Smart Contextual Popup Menu (Hidden by default) -->
+    <div id="waPopupCard" class="hidden mb-4 w-80 sm:w-96 rounded-3xl bg-white/95 dark:bg-obsidian-950/95 backdrop-blur-2xl border border-emerald-500/35 p-5 shadow-2xl text-right overflow-hidden shadow-emerald-500/15 transition-all">
+      <!-- Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="message-circle" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white font-heading">مستشار AUTOMATA IQ</h4>
+            <div class="flex items-center gap-1.5 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>متصل الآن لخدمتك عبر واتساب</span>
+            </div>
+          </div>
+        </div>
+        <button
+          onclick="toggleWaPopup()"
+          class="p-1.5 rounded-lg text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          aria-label="إغلاق"
+        >
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Current Section Context Indicator -->
+      <div class="my-3.5 p-3 rounded-2xl bg-slate-50 dark:bg-obsidian-900 border border-slate-200 dark:border-slate-800">
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-[11px] text-slate-500 dark:text-slate-400 font-mono">القسم المتصفح حالياً:</span>
+          <span id="waActiveSectionBadge" class="text-[10px] font-bold px-2.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
+            بدء مشروع جديد
+          </span>
+        </div>
+        <p id="waActiveSectionName" class="text-xs font-bold text-slate-900 dark:text-slate-200">الرئيسية واستكشاف المنظومات</p>
+      </div>
+
+      <!-- Dynamic Message Preview -->
+      <div class="mb-4">
+        <label class="block text-[11px] text-slate-600 dark:text-slate-400 mb-1.5 font-medium">
+          نص الرسالة الذكية المخصصة للقسم:
+        </label>
+        <textarea
+          id="waCustomMessageInput"
+          rows="3"
+          class="w-full text-xs p-2.5 rounded-xl bg-slate-100 dark:bg-obsidian-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-200 focus:outline-none focus:border-emerald-500 transition-colors resize-none leading-relaxed"
+          placeholder="اكتب استفسارك أو عدل الرسالة هنا..."
+        ></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="space-y-2">
+        <button
+          type="button"
+          onclick="sendSmartWhatsApp()"
+          class="w-full py-3 px-4 rounded-xl btn-start-project text-xs sm:text-sm font-bold font-heading flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]"
+        >
+          <i data-lucide="send" class="w-4 h-4 text-obsidian-950"></i>
+          <span>إرسال ومتابعة عبر WhatsApp المباشر ➔</span>
+        </button>
+
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button
+            type="button"
+            onclick="quickSendWhatsApp('مرحباً AUTOMATA IQ، أود حجز جلسة استكشافية ومناقشة تفاصيل أتمتة عمليات شركتي.')"
+            class="p-2 rounded-xl bg-slate-100 dark:bg-obsidian-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-bold text-slate-700 dark:text-slate-300 text-center transition-colors border border-slate-200 dark:border-slate-800"
+          >
+            ⚡ حجز جلسة مجانية
+          </button>
+          <button
+            type="button"
+            onclick="quickSendWhatsApp('مرحباً AUTOMATA IQ، أود طلب تسعيرة لمنظومة أتمتة مخصصة لنشاطي التجاري.')"
+            class="p-2 rounded-xl bg-slate-100 dark:bg-obsidian-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-[11px] font-bold text-slate-700 dark:text-slate-300 text-center transition-colors border border-slate-200 dark:border-slate-800"
+          >
+            💼 طلب تسعيرة فورية
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Floating Trigger Button with Dynamic Context Pill -->
+    <div class="flex items-center gap-3">
+      
+      <!-- Context pill (clickable on desktop) -->
+      <button
+        type="button"
+        onclick="toggleWaPopup()"
+        id="waContextPill"
+        class="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-obsidian-900/95 hover:bg-slate-100 dark:hover:bg-obsidian-800 text-slate-900 dark:text-slate-200 border border-emerald-500/40 text-xs font-bold shadow-xl backdrop-blur-xl transition-all group"
+      >
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-500 animate-pulse"></i>
+        <span>ابدأ مشروعك: <strong id="waPillTopic" class="text-emerald-600 dark:text-emerald-400">الرئيسية</strong></span>
+        <i data-lucide="arrow-left" class="w-3 h-3 text-slate-400 group-hover:-translate-x-0.5 transition-transform"></i>
+      </button>
+
+      <!-- WhatsApp Round Floating Button -->
+      <button
+        type="button"
+        onclick="toggleWaPopup()"
+        id="waFloatingBtn"
+        class="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 hover:from-emerald-500 hover:to-emerald-300 text-obsidian-950 shadow-2xl shadow-emerald-500/40 transition-all hover:scale-110 active:scale-95"
+        aria-label="تواصل واتساب الذكي"
+      >
+        <!-- Ping indicator -->
+        <span class="absolute -top-1 -right-1 flex h-4 w-4">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-300 border-2 border-white dark:border-obsidian-950"></span>
+        </span>
+
+        <i id="waBtnIconChat" data-lucide="message-circle" class="w-7 h-7 text-obsidian-950"></i>
+        <i id="waBtnIconClose" data-lucide="x" class="w-6 h-6 text-obsidian-950 hidden"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    function initTheme() {
+      const savedTheme = localStorage.getItem('automata_theme') || 'dark';
+      applyTheme(savedTheme === 'dark');
+    }
+
+    function applyTheme(isDark) {
+      const sunIcon = document.getElementById('themeSunIcon');
+      const moonIcon = document.getElementById('themeMoonIcon');
+
+      if (isDark) {
+        document.documentElement.classList.add('dark');
+        if (sunIcon) sunIcon.classList.add('hidden');
+        if (moonIcon) moonIcon.classList.remove('hidden');
+      } else {
+        document.documentElement.classList.remove('dark');
+        if (moonIcon) moonIcon.classList.add('hidden');
+        if (sunIcon) sunIcon.classList.remove('hidden');
+      }
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('automata_theme', isDark ? 'dark' : 'light');
+      applyTheme(isDark);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      lucide.createIcons();
+      initScrollReveal();
+      initNeuralCanvas();
+      calculateCustomSystem();
+
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+    });
+
+    function initScrollReveal() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    function initNeuralCanvas() {
+      const canvas = document.getElementById('neuralCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = canvas.parentElement.offsetWidth;
+        height = canvas.height = canvas.parentElement.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.vx = (Math.random() - 0.5) * 0.6;
+          this.vy = (Math.random() - 0.5) * 0.6;
+          this.radius = Math.random() * 1.8 + 0.8;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width) this.vx *= -1;
+          if (this.y < 0 || this.y > height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(0, 245, 155, 0.75)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < 35; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 115) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[i].x, particles[j].y);
+              ctx.strokeStyle = `rgba(0, 245, 155, ${0.28 * (1 - dist / 115)})`;
+              ctx.lineWidth = 0.75;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    function filterAgents(category) {
+      const tabs = document.querySelectorAll('.agent-tab');
+      tabs.forEach(tab => {
+        if (tab.getAttribute('data-cat') === category) {
+          tab.className = 'agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/45 transition-all shadow-lg shadow-emerald-500/15';
+        } else {
+          tab.className = 'agent-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-slate-100 dark:bg-obsidian-900 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-800 hover:text-emerald-500 transition-all';
+        }
+      });
+
+      const cards = document.querySelectorAll('.agent-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-agent-cat') === category) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const content = item.querySelector('.faq-content');
+      const icon = item.querySelector('.faq-icon');
+      const isOpen = !content.classList.contains('hidden');
+
+      document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotate-180'));
+
+      if (!isOpen) {
+        content.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      }
+    }
+
+    function switchPackageTab(tab) {
+      const turnkeyContainer = document.getElementById('turnkeyPackagesContainer');
+      const customContainer = document.getElementById('customBuilderContainer');
+      const turnkeyBtn = document.getElementById('tabTurnkeyBtn');
+      const customBtn = document.getElementById('tabCustomBtn');
+
+      if (tab === 'turnkey') {
+        turnkeyContainer.classList.remove('hidden');
+        customContainer.classList.add('hidden');
+
+        turnkeyBtn.className = 'px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all bg-gradient-to-r from-emerald-500 to-cyan-500 text-obsidian-950 shadow-md';
+        customBtn.className = 'px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all text-slate-700 dark:text-slate-300 hover:text-emerald-500';
+      } else {
+        turnkeyContainer.classList.add('hidden');
+        customContainer.classList.remove('hidden');
+
+        customBtn.className = 'px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all bg-gradient-to-r from-emerald-500 to-cyan-500 text-obsidian-950 shadow-md';
+        turnkeyBtn.className = 'px-5 sm:px-7 py-3 rounded-xl font-heading font-bold text-xs sm:text-sm flex items-center gap-2 transition-all text-slate-700 dark:text-slate-300 hover:text-emerald-500';
+      }
+      lucide.createIcons();
+    }
+
+    function calculateCustomSystem() {
+      const agentCheckboxes = document.querySelectorAll('.builder-agent-checkbox:checked');
+      const integrationCheckboxes = document.querySelectorAll('.builder-integration-checkbox:checked');
+      
+      let totalHours = 0;
+      let selectedAgents = [];
+      agentCheckboxes.forEach(cb => {
+        totalHours += parseInt(cb.getAttribute('data-hours') || '0', 10);
+        selectedAgents.push(cb.getAttribute('data-title'));
+      });
+
+      let selectedIntegrations = [];
+      integrationCheckboxes.forEach(cb => {
+        selectedIntegrations.push(cb.getAttribute('data-title'));
+      });
+
+      const timeSavedEl = document.getElementById('builderTimeSaved');
+      const staffSavedEl = document.getElementById('builderStaffSaved');
+      const daysEl = document.getElementById('builderDays');
+      const whatsappBtn = document.getElementById('builderWhatsappBtn');
+
+      if (totalHours === 0) {
+        if (timeSavedEl) timeSavedEl.textContent = '0 ساعة';
+        if (staffSavedEl) staffSavedEl.textContent = 'يرجى تحديد موظف رقمي واحد على الأقل';
+        if (daysEl) daysEl.textContent = '-';
+      } else {
+        if (timeSavedEl) timeSavedEl.textContent = `${totalHours}+ ساعة / شهرياً`;
+        
+        let staffText = 'توفير يعادل جهد موظف بدوام كامل';
+        if (totalHours >= 90) {
+          staffText = 'توفير يعادل جهد 3 إلى 5 موظفين بدوام كامل';
+        } else if (totalHours >= 50) {
+          staffText = 'توفير يعادل جهد 2 إلى 3 موظفين بدوام كامل';
+        }
+        if (staffSavedEl) staffSavedEl.textContent = staffText;
+
+        let daysText = '3 إلى 5 أيام عمل';
+        if (agentCheckboxes.length > 3 || integrationCheckboxes.length > 3) {
+          daysText = '7 إلى 10 أيام عمل';
+        } else if (agentCheckboxes.length >= 2) {
+          daysText = '5 إلى 7 أيام عمل';
+        }
+        if (daysEl) daysEl.textContent = daysText;
+      }
+
+      // Prepare custom WhatsApp message
+      const agentListStr = selectedAgents.length > 0 ? selectedAgents.join('، ') : 'لم يتم التحديد بعد';
+      const intListStr = selectedIntegrations.length > 0 ? selectedIntegrations.join('، ') : 'بدون ربط خارجي';
+
+      const whatsappText = `مرحباً، صممت منظومة أتمتة وذكاء اصطناعي مخصصة عبر موقعكم AUTOMATA IQ وأرغب ببدء تنفيذها:%0A%0A*الموظفون الرقميون المطلوبون:*%0A- ${agentListStr}%0A%0A*قنوات الربط والتكامل:*%0A- ${intListStr}%0A%0A*الوقت المقدر توفيره:* ${totalHours}+ ساعة شهرياً.%0Aأرجو تزويدي بالخطة الفنية وتأكيد موعد البدء.`;
+
+      if (whatsappBtn) {
+        whatsappBtn.href = `https://wa.me/message/WWNJZ6JUPB5GP1?text=${whatsappText}`;
+      }
+    }
+
+    // ==============================================================
+    // SMART CONTEXTUAL WHATSAPP ROUTING ENGINE
+    // ==============================================================
+    const SMART_SECTIONS = {
+      hero: {
+        id: 'hero',
+        badge: 'بدء مشروع جديد',
+        name: 'الرئيسية واستكشاف المنظومات',
+        msg: 'مرحباً AUTOMATA IQ، أود بدء مشروع جديد لأتمتة العمليات وهندسة الذكاء الاصطناعي لنشاطي التجاري ومضاعفة الكفاءة التشغيلية.'
+      },
+      services: {
+        id: 'services',
+        badge: 'خدمات الأتمتة',
+        name: 'الموظفون الرقميون وأنظمة الأتمتة',
+        msg: 'مرحباً AUTOMATA IQ، أنا أتصفح قسم خدمات الأتمتة، وأرغب في استشارة وبدء مشروع لتوظيف أنظمة ذكاء اصطناعي وأتمتة العمليات في شركتي.'
+      },
+      packages: {
+        id: 'packages',
+        badge: 'باقاتنا والمنظومات',
+        name: 'باقاتنا والمنظومات المخصصة',
+        msg: 'مرحباً AUTOMATA IQ، اطلعت على باقاتكم والمنظومات المخصصة وأرغب في مناقشة الباقة الأنسب لنشاطي التجاري والبدء فوراً.'
+      },
+      testimonials: {
+        id: 'testimonials',
+        badge: 'قصص النجاح',
+        name: 'آراء العملاء والنتائج السابقة',
+        msg: 'مرحباً AUTOMATA IQ، اطلعت على قصص النجاح ونتائج الأتمتة السابقة، وأود تطبيق حلول مماثلة لرفع كفاءة منشأتي.'
+      },
+      blog: {
+        id: 'blog',
+        badge: 'المدونة المعرفية',
+        name: 'المدونة ومقالات الأتمتة',
+        msg: 'مرحباً AUTOMATA IQ، قرأت مقالاتكم المتخصصة في الأتمتة وأود استشارة فريقكم لبدء أتمتة العمليات في شركتي.'
+      },
+      faq: {
+        id: 'faq',
+        badge: 'الأسئلة الشائعة',
+        name: 'الأسئلة الشائعة والاستفسارات',
+        msg: 'مرحباً AUTOMATA IQ، لدي بعض الاستفسارات حول آلية العمل وضمان التشغيل وأرغب في بدء مشروعي معكم.'
+      },
+      footer: {
+        id: 'footer',
+        badge: 'استشارة فورية',
+        name: 'التواصل والاستشارة',
+        msg: 'مرحباً AUTOMATA IQ، أود التواصل مع مستشار الأتمتة لبدء مشروع جديد وتطوير عمليات شركتي.'
+      }
+    };
+
+    let currentSectionContext = SMART_SECTIONS.hero;
+    let isWaPopupOpen = false;
+
+    function getCurrentActiveSection() {
+      const sectionKeys = ['services', 'packages', 'testimonials', 'blog', 'faq'];
+      const scrollPos = window.scrollY + 300;
+
+      for (let i = 0; i < sectionKeys.length; i++) {
+        const secId = sectionKeys[i];
+        const el = document.getElementById(secId);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            return SMART_SECTIONS[secId] || SMART_SECTIONS.hero;
+          }
+        }
+      }
+
+      if (window.scrollY + window.innerHeight >= document.body.scrollHeight - 100) {
+        return SMART_SECTIONS.footer;
+      }
+
+      return SMART_SECTIONS.hero;
+    }
+
+    function updateSmartWhatsAppContext() {
+      const section = getCurrentActiveSection();
+      currentSectionContext = section;
+
+      const badgeEl = document.getElementById('waActiveSectionBadge');
+      const nameEl = document.getElementById('waActiveSectionName');
+      const pillTopicEl = document.getElementById('waPillTopic');
+      const messageInput = document.getElementById('waCustomMessageInput');
+
+      if (badgeEl) badgeEl.textContent = section.badge;
+      if (nameEl) nameEl.textContent = section.name;
+      if (pillTopicEl) pillTopicEl.textContent = section.badge;
+      if (messageInput && !messageInput.dataset.userEdited) {
+        messageInput.value = section.msg;
+      }
+    }
+
+    function toggleWaPopup() {
+      const card = document.getElementById('waPopupCard');
+      const iconChat = document.getElementById('waBtnIconChat');
+      const iconClose = document.getElementById('waBtnIconClose');
+      const messageInput = document.getElementById('waCustomMessageInput');
+
+      if (!card) return;
+
+      isWaPopupOpen = !isWaPopupOpen;
+      if (isWaPopupOpen) {
+        updateSmartWhatsAppContext();
+        if (messageInput && !messageInput.dataset.userEdited) {
+          messageInput.value = currentSectionContext.msg;
+        }
+        card.classList.remove('hidden');
+        if (iconChat) iconChat.classList.add('hidden');
+        if (iconClose) iconClose.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+        if (iconChat) iconChat.classList.remove('hidden');
+        if (iconClose) iconClose.classList.add('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    function sendSmartWhatsApp() {
+      const messageInput = document.getElementById('waCustomMessageInput');
+      const text = (messageInput && messageInput.value.trim()) || currentSectionContext.msg;
+      const url = `https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      toggleWaPopup();
+    }
+
+    function quickSendWhatsApp(customText) {
+      const url = `https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodeURIComponent(customText)}`;
+      window.open(url, '_blank');
+      toggleWaPopup();
+    }
+
+    // Intercept clicks on any "ابدأ مشروعك" or general WhatsApp CTA button to add contextual message
+    function initSmartWhatsAppInterceptors() {
+      const waButtons = document.querySelectorAll('a.btn-start-project, a[href*="wa.me"]');
+      
+      waButtons.forEach(btn => {
+        // Skip builder button which has its own specific calculation logic
+        if (btn.id === 'builderWhatsappBtn') return;
+
+        btn.addEventListener('click', (e) => {
+          // If the button has an already complete detailed custom text query, allow it
+          const currentHref = btn.getAttribute('href') || '';
+          if (currentHref.includes('text=') && !currentHref.endsWith('text=')) {
+            return; // has pre-formatted custom text
+          }
+
+          e.preventDefault();
+
+          // 1. Check if clicked inside a specific agent card
+          const card = btn.closest('.agent-card') || btn.closest('.precision-card');
+          let targetedText = '';
+
+          if (card) {
+            const heading = card.querySelector('h3');
+            if (heading) {
+              const serviceTitle = heading.innerText.trim();
+              targetedText = `مرحباً AUTOMATA IQ، أود بدء مشروعي والاستفسار عن خدمة: "${serviceTitle}" لنشاطي التجاري.`;
+            }
+          }
+
+          // 2. Fallback to active section in view
+          if (!targetedText) {
+            const activeSection = getCurrentActiveSection();
+            targetedText = activeSection.msg;
+          }
+
+          const finalUrl = `https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodeURIComponent(targetedText)}`;
+          window.open(finalUrl, '_blank');
+        });
+      });
+
+      // Listen to textarea user input so we don't overwrite if they type something
+      const messageInput = document.getElementById('waCustomMessageInput');
+      if (messageInput) {
+        messageInput.addEventListener('input', () => {
+          messageInput.dataset.userEdited = 'true';
+        });
+      }
+
+      // Update context on scroll
+      window.addEventListener('scroll', () => {
+        if (!isWaPopupOpen) {
+          updateSmartWhatsAppContext();
+        }
+      }, { passive: true });
+
+      // Initial context update
+      updateSmartWhatsAppContext();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initSmartWhatsAppInterceptors();
+    });
+  </script>
+</body>
+</html>

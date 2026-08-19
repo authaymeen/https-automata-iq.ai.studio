@@ -1,0 +1,22 @@
+{
+  "short_name": "PromptMaster",
+  "name": "Prompt Master - منصة هندسة الأوامر الذكية للتجار",
+  "description": "المنصة الذكية الأولى في الخليج العربي لهندسة الأوامر وأتمتة التجارة الإلكترونية للتجار النخبة.",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=192&auto=format&fit=crop",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=512&auto=format&fit=crop",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait"
+}

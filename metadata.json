@@ -1,0 +1,6 @@
+{
+  "name": "Automata IQ",
+  "description": "هندسة الأتمتة والذكاء الاصطناعي للشركات ورواد الأعمال - منصة وحلول أتمتة العمليات وتدفقات الأعمال الذكية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

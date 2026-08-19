@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#050c1e" />
+      <stop offset="100%" stop-color="#020612" />
+    </radialGradient>
+    <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#00f0ff" />
+    </linearGradient>
+    <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a5f3fc" />
+      <stop offset="70%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#0891b2" />
+    </radialGradient>
+  </defs>
+
+  <!-- Deep Space Dark Background -->
+  <rect width="500" height="500" rx="40" fill="url(#bgGrad)" />
+
+  <!-- The "AI" Circuit Ligature Logo -->
+  <g transform="translate(135, 75) scale(1.15)">
+    <!-- Outer 'A' Frame -->
+    <path
+      d="M 20 180 L 76 30 C 78 24 86 24 88 30 L 144 180"
+      stroke="url(#cyanGrad)"
+      stroke-width="14"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+      filter="url(#neonGlow)"
+    />
+
+    <!-- Intertwined Neural Circuit Swoop for 'i' and Crossbar -->
+    <path
+      d="M 44 140 C 74 140 82 108 98 78 C 108 58 120 44 135 44 C 146 44 154 54 154 68 L 154 180"
+      stroke="url(#cyanGrad)"
+      stroke-width="13"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+      filter="url(#neonGlow)"
+    />
+
+    <!-- Neural Connection to Lower Right Base -->
+    <line
+      x1="108"
+      y1="110"
+      x2="140"
+      y2="168"
+      stroke="url(#cyanGrad)"
+      stroke-width="7"
+      stroke-linecap="round"
+      filter="url(#neonGlow)"
+    />
+
+    <!-- Horizontal Interconnecting Bar -->
+    <line
+      x1="46"
+      y1="140"
+      x2="114"
+      y2="120"
+      stroke="url(#cyanGrad)"
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+
+    <!-- Glowing Neural Nodes -->
+    <!-- Top Dot of 'i' -->
+    <circle cx="145" cy="44" r="11" fill="url(#nodeGrad)" stroke="#ecfeff" stroke-width="3.5" filter="url(#neonGlow)" />
+    
+    <!-- Left Crossbar Node -->
+    <circle cx="46" cy="140" r="10" fill="url(#nodeGrad)" stroke="#ecfeff" stroke-width="3" filter="url(#neonGlow)" />
+    
+    <!-- Center Node -->
+    <circle cx="90" cy="94" r="8.5" fill="url(#nodeGrad)" stroke="#ecfeff" stroke-width="2.5" />
+    
+    <!-- Lower Right Node -->
+    <circle cx="140" cy="170" r="10" fill="url(#nodeGrad)" stroke="#ecfeff" stroke-width="3" filter="url(#neonGlow)" />
+  </g>
+
+  <!-- Typography: AUTOMATA IQ -->
+  <text
+    x="250"
+    y="385"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
+    font-size="34"
+    font-weight="800"
+    letter-spacing="7"
+    fill="#ffffff"
+  >
+    AUTOMATA <tspan fill="#06b6d4">IQ</tspan>
+  </text>
+</svg>
