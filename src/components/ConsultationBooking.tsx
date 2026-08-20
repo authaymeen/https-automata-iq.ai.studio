@@ -44,7 +44,7 @@ export default function ConsultationBooking() {
 يرجى تأكيد موعد الجلسة الاستكشافية وخطة الأتمتة المخصصة.`;
 
     const encodedMsg = encodeURIComponent(waMessage);
-    const waUrl = `https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodedMsg}`;
+    const waUrl = `https://wa.me/966581751130?text=${encodedMsg}`;
 
     setTimeout(() => {
       setStatus({
@@ -110,7 +110,7 @@ export default function ConsultationBooking() {
               <div>
                 <div className="text-xs text-slate-400">تفضل التواصل المباشر السريع؟</div>
                 <a
-                  href="https://wa.me/message/WWNJZ6JUPB5GP1?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20AUTOMATA%20IQ%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D9%88%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9."
+                  href="https://wa.me/966581751130?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20AUTOMATA%20IQ%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%A3%D8%AA%D9%85%D8%AA%D8%A9%20%D9%88%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9."
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm font-bold text-cyan-400 hover:underline"

@@ -290,7 +290,7 @@ export default function LegalModals({ activeTab, onClose }: LegalModalsProps) {
                   <div className="flex items-center gap-1.5">
                     <PhoneCall className="w-3.5 h-3.5 text-amber-500" />
                     <span>لأي استفسار فني أو تسويقي:</span>
-                    <a href="https://wa.me/message/WWNJZ6JUPB5GP1" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline">راسلنا واتساب</a>
+                    <a href="https://wa.me/966581751130" target="_blank" rel="noopener noreferrer" className="text-emerald-400 font-bold hover:underline">راسلنا واتساب</a>
                   </div>
                   <span>سياسة حكيمة تضمن حق الطرفين ⚖️</span>
                 </div>

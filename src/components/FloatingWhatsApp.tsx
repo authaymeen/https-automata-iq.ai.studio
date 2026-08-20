@@ -72,7 +72,7 @@ const SECTION_CONTEXTS: Record<string, SectionContext> = {
   },
 };
 
-const WA_BASE_URL = "https://wa.me/message/WWNJZ6JUPB5GP1";
+const WA_BASE_URL = "https://wa.me/966581751130";
 
 export default function FloatingWhatsApp() {
   const [activeSection, setActiveSection] = useState<SectionContext>(SECTION_CONTEXTS.hero);

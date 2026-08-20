@@ -25,8 +25,8 @@ export default function PricingSection({ currentUser, isLoggedIn, onScrollToActi
     const userEmail = currentUser?.email || "بريدي الإلكتروني";
     const price = tier === "PRO" ? proMonthly : ultraMonthly;
     
-    const baseMessage = `أهلاً ومرحباً فريق Prompt Master، أرغب في تفعيل باقة ${tier} لبريدي الإلكتروني: ${userEmail} بقيمة ${price} ريال سعودي. يرجى تزويدي بطرق الدفع وكود التفعيل السحابي.`;
-    return `https://wa.me/message/WWNJZ6JUPB5GP1?text=${encodeURIComponent(baseMessage)}`;
+    const baseMessage = `أهلاً ومرحباً فريق AUTOMATA IQ، أرغب في تفعيل باقة ${tier} لبريدي الإلكتروني: ${userEmail} بقيمة ${price} ريال سعودي. يرجى تزويدي بطرق الدفع وكود التفعيل السحابي.`;
+    return `https://wa.me/966581751130?text=${encodeURIComponent(baseMessage)}`;
   };
 
   const pricingFaqs = [
